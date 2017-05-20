@@ -31,7 +31,7 @@ public class User {
 	private String email;
 
 	@Column(name = "password")
-	@Length(min = 5, message = "*Your password must have at least 5 characters")
+	@Length(min = 8, message = "*Your password must have at least 8 characters")
 	@NotEmpty(message = "*Please provide your password")
 	@Transient
 	private String password;
@@ -44,7 +44,7 @@ public class User {
 	@NotEmpty(message = "*Please provide your last name")
 	private String lastName;
 
-	@Column(name = "active")
+	@Column(name = "active") //Esto no se esta usando pero puede ser util en un futuro
 	private int active;
 
 	@ManyToMany(cascade = CascadeType.ALL)
