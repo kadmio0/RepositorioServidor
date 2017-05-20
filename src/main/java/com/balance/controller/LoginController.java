@@ -53,8 +53,12 @@ public class LoginController {
 	public String home(Model model){
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		User user = userService.findUserByEmail(auth.getName());
+		if (user == null) {
+			return "redirect:/";
+		}
 		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		model.addAttribute("adminMessage","Content Available Only for Users with Admin Role");
+		model.addAttribute("userList", userService.listAllUsers());
 		return "admin/home";
 	}
 

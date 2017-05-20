@@ -10,5 +10,25 @@
 
 		<label th:text="${userName}"></label>
 		<p th:text="${adminMessage}"></p>
+
+		<h2>User List</h2>
+		<table class="table table-striped">
+			<tr>
+				<th>Id</th>
+				<th>Name</th>
+				<th>Last Name</th>
+				<th>Email</th>
+				<th>View</th>
+				<th>Delete</th>
+			</tr>
+			<tr th:each="user : ${userList}">
+				<td th:text="${user.id}">Id</td>
+				<td th:text="${user.name}">Name</td>
+				<td th:text="${user.lastName}">Last Name</td>
+				<td th:text="${user.email}">Email</td>
+				<td><a th:href="${'/admin/user/' + user.id}">View</a></td>
+				<td><a th:href="${'/admin/user/delete/' + user.id}">Delete</a></td>
+			</tr>
+		</table>
 	</body>
 </html>
