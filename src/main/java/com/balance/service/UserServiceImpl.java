@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
+<<<<<<< HEAD
 	public Iterable<User> listAllUsers() {
 		return userRepository.findAll();
 	}
@@ -50,4 +51,9 @@ public class UserServiceImpl implements UserService{
 	public void deleteUser(Integer id) {
 		userRepository.delete(id);
 	}
+=======
+	public Iterable<User> listAllUsers(){
+		return userRepository.findAll();
+	}
+>>>>>>> aee3e168b14f0eaae80665da040e9f62079ce89e
 }

@@ -85,4 +85,10 @@ public class LoginController {
 	public String accesoDenegado() {
 		return "access-denied";
 	}
+
+	@RequestMapping(value = "/admin/users", method = RequestMethod.GET)
+	public String listUsers(Model model) {
+		model.addAttribute("Users",userService.listAllUsers());
+		return "users";
+	}
 }
