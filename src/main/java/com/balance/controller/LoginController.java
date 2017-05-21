@@ -83,7 +83,7 @@ public class LoginController {
 
 	@RequestMapping(value = "/access-denied", method = RequestMethod.GET)
 	public String accesoDenegado() {
-		return "access-denied";
+		return "access-denied"; //Solo devuelve un mensaje
 	}
 
 	@RequestMapping(value = "/admin/users", method = RequestMethod.GET)

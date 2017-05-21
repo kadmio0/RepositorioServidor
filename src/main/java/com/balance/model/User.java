@@ -51,6 +51,12 @@ public class User {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
+	private int weigth;
+
+	private int heigth;
+
+	private int age;
+
 	public int getId() {
 		return id;
 	}
@@ -105,5 +111,29 @@ public class User {
 
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
+	}
+
+	public int getWeigth() {
+		return weigth;
+	}
+
+	public void setWeigth(int weigth) {
+		this.weigth = weigth;
+	}
+
+	public int getHeigth() {
+		return heigth;
+	}
+
+	public void setHeigth(int heigth) {
+		this.heigth = heigth;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 }

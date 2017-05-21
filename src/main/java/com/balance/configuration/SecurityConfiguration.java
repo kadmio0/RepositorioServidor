@@ -47,7 +47,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.antMatchers("/registration").permitAll()
 				.antMatchers("/admin/**").hasAuthority("ADMIN")			//.anyRequest().authenticated()
 				.antMatchers("/user/**").hasAuthority("LIMITED")		//.anyRequest().authenticated()
-				.anyRequest().authenticated()
+				.anyRequest().authenticated()  //Este comando hace que para las siguientes lines de codigo el usuario lo debe tomar en cuenta como registrado
 				.and().csrf().disable()									// PREVIENE ATAQUES CSRF ???
 				.formLogin()
 				.loginPage("/login")
@@ -65,5 +65,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Override
 	public void configure(WebSecurity web) throws Exception {
 		web.ignoring().antMatchers("/resources/**", "/static/**", "/css/**", "/js/**", "/images/**");
-	}
+	} //Evita que el usuario entre a estas direcciones
 }
