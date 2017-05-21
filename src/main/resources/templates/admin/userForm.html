@@ -7,16 +7,17 @@
 <div class="container">
     <h2>Active user</h2>
     <div>
-        <form class="form-horizontal" th:object="${user}" th:action="@{/user}" method="POST">
+        <form class="form-horizontal" th:object="${user}" th:action="@{/admin/user}" method="POST">
             <input type="hidden" th:field="*{id}"/>
             <input type="hidden" th:field="*{email}"/>
             <input type="hidden" th:field="*{password}"/>
             <input type="hidden" th:field="*{name}"/>
+            <input type="hidden" th:field="*{lastName}"/>
             <input type="hidden" th:field="*{roles}"/>
             <br class="form-group">
             <div>
                 <label class="col-sm-2 control-label">Active:</label>
-                <input type="checkbox" th:field="*{active}" th:value="*{active}"/>
+                <input type="text" th:field="*{active}" th:value="*{active}"/>
             </div>
             </br>
             <div class="row">

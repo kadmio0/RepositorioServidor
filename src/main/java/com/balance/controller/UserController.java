@@ -37,7 +37,7 @@ public class UserController {
         return "admin/userForm";
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    @RequestMapping(value = "/admin/user", method = RequestMethod.POST)
     public String saveUser(User user) {
         userService.saveUserEdited(user);
         return "redirect:/admin/home";
