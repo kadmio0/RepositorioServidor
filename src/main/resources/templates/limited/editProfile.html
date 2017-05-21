@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Edit your information</title>
+</head>
+<body>
+<div class="container">
+    <h2>Edit my information</h2>
+    <div>
+        <form class="form-horizontal" th:object="${user}" th:action="@{/user}" method="POST">
+            <input type="hidden" th:field="*{id}" />
+            <input type="hidden" th:field="*{active}" />
+            <input type="hidden" th:field="*{email}" />
+            <input type="hidden" th:field="*{password}" />
+
+            <label>Name:</label><br/>
+            <input type="text" th:field="*{name}" placeholder="Nombre" /><br/>
+            <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" /><br/>
+
+            <label>Last Name:</label><br/>
+            <input type="text" th:field="*{lastName}" placeholder="Apellido" /><br/>
+            <label th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" /><br/>
+
+
+            <p>Heigth: </p>
+            <input type="text"  th:field="*{heigth}"/>
+
+            <p>Weigth: </p>
+            <input type="text"  th:field="*{weigth}"/>
+
+            <p>Age: </p>
+            <input type="text"  th:field="*{age}"/>
+
+
+            <div class="row">
+                <button type="submit" class="btn btn-default">Done</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

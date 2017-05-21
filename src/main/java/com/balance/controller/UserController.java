@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.jws.soap.SOAPBinding;
+
 @Controller
 public class UserController {
 
@@ -40,7 +42,31 @@ public class UserController {
     @RequestMapping(value = "/admin/user", method = RequestMethod.POST)
     public String saveUser(User user) {
         userService.saveUserEdited(user);
-        return "redirect:/admin/home";
+        return "redirect:/admin/exclusive";
     }
+
+    //LimitedUser Controller--------------------------------------------------------
+
+    @RequestMapping(value = "/user/profile/{id}",method = RequestMethod.GET)
+    public String viewProfile(@PathVariable Integer id,Model model) {
+        model.addAttribute("user",userService.getUserById(id));
+        return "limited/profile";
+    }
+
+    @RequestMapping(value = "/user/edit/{id}",method = RequestMethod.GET)
+    public String editProfile(@PathVariable Integer id,Model model) {
+        model.addAttribute("user",userService.getUserById(id));
+        return "limited/editProfile";
+    }
+
+
+    @RequestMapping(value = "/user",method = RequestMethod.POST)
+    public String saveLimitedUser(User user) {
+        userService.saveUser(user);
+        return "redirect:/user/profile/" + user.getId();
+    }
+
+
+
 
 }

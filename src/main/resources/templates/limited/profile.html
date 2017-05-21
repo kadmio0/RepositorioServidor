@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>UserProfile</title>
+</head>
+<body>
+<div class="container">
+    <div>
+        <h3> Name: </h3>
+        <p th:text="${user.name}">name</p>
+        <h3>Email:</h3>
+        <p th:text="${user.email}">email</p>
+        <h3>Age:</h3>
+        <p th:text="${user.age}">age</p>
+        <h3>Heigth:</h3>
+        <p th:text="${user.heigth}">heigth</p>
+        <h3>Wheigth:</h3>
+        <p th:text="${user.weigth}">weigth</p>
+
+        <p>EDIT TERMINAL</p>
+        <p>EDIT EMAIL</p>
+        <p>EDIT PASSWORD</p>
+
+        <a th:href="${'/user/edit/' + user.id}">Edit info</a>
+
+    </div>
+</div>
+</body>
+</html>
