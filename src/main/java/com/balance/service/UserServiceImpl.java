@@ -36,11 +36,6 @@ public class UserServiceImpl implements UserService{
 		userRepository.save(user);
 	}
 
-	@Override
-<<<<<<< HEAD
-	public Iterable<User> listAllUsers() {
-		return userRepository.findAll();
-	}
 
 	@Override
 	public User getUserById(Integer id) {
@@ -51,9 +46,13 @@ public class UserServiceImpl implements UserService{
 	public void deleteUser(Integer id) {
 		userRepository.delete(id);
 	}
-=======
+	@Override
 	public Iterable<User> listAllUsers(){
 		return userRepository.findAll();
 	}
->>>>>>> aee3e168b14f0eaae80665da040e9f62079ce89e
+
+	@Override
+	public void saveUserEdited(User user){
+		userRepository.save(user);
+	}
 }

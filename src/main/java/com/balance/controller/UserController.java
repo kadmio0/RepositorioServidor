@@ -31,4 +31,16 @@ public class UserController {
         return "redirect:/admin/home";
     }
 
+    @RequestMapping(value = "/admin/user/edit/{id}",method = RequestMethod.GET)
+    public String editUser(@PathVariable Integer id,Model model) {
+        model.addAttribute("user",userService.getUserById(id));
+        return "admin/userForm";
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.POST)
+    public String saveUser(User user) {
+        userService.saveUserEdited(user);
+        return "redirect:/admin/home";
+    }
+
 }

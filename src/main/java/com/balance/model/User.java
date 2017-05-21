@@ -44,7 +44,7 @@ public class User {
 	@NotEmpty(message = "*Please provide your last name")
 	private String lastName;
 
-	@Column(name = "active") //Esto no se esta usando pero puede ser util en un futuro
+	@Column(name = "active")
 	private int active;
 
 	@ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.PERSIST})
