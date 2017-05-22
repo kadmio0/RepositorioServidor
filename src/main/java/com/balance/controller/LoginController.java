@@ -107,7 +107,20 @@ public class LoginController {
 	@RequestMapping(value="/send-mail", method = RequestMethod.GET)
 	public String sendMail(HttpServletRequest request) throws MessagingException,ServletException {
 		String text1= request.getParameter("email");
-		smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "success");
+		smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "recover password: <a href='http://localhost:8080/changepassword'>Recover password</a>");
+		return "redirect:/";
+	}
+	@RequestMapping(value="/changepassword", method = RequestMethod.GET)
+	public String changepassword() {
+		return "changepassword";
+	}
+	@RequestMapping(value="/changepasswordyes", method = RequestMethod.GET)
+	public String changepassword1(String email,String password) {
+		User userExists = userService.findUserByEmail(email);
+		if (userExists != null) {
+			userExists.setPassword(password);
+			userService.saveUser(userExists);
+		}
 		return "redirect:/";
 	}
 }
