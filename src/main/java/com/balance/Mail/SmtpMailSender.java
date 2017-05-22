@@ -1,4 +1,4 @@
-package com.balance;
+package com.balance.Mail;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
