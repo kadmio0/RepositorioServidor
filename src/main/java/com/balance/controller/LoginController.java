@@ -1,8 +1,12 @@
 package com.balance.controller;
 
+import javax.mail.MessagingException;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+
+import com.balance.SmtpMailSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -23,6 +27,9 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
+
+	@Autowired
+	private SmtpMailSender smtpMailSender;
 
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public String login(){
@@ -92,5 +99,15 @@ public class LoginController {
 		return "users";
 	}
 
+	@RequestMapping(value="/forgot", method = RequestMethod.GET)
+	public String forgotpassword(){
+		return "forgot";
+	}
 
+	@RequestMapping(value="/send-mail", method = RequestMethod.GET)
+	public String sendMail(HttpServletRequest request) throws MessagingException,ServletException {
+		String text1= request.getParameter("email");
+		smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "success");
+		return "redirect:/";
+	}
 }
