@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>UserProfile</title>
+</head>
+<body>
+<div class="container">
+    <div>
+        <p>Hola</p>
+        <a th:href="${'/user/profile/' + user.id}">Profile</a>
+    </div>
+</div>
+</body>
+</html>

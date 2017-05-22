@@ -63,6 +63,7 @@ public class LoginController {
 		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		model.addAttribute("adminMessage","Content Available Only for Users with Admin Role");
 		model.addAttribute("userList", userService.listAllUsers());
+		model.addAttribute("user", user);
 		return "admin/home";
 	}
 
@@ -72,7 +73,8 @@ public class LoginController {
 		User user = userService.findUserByEmail(auth.getName());
 		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
-		return "admin/exclusive";
+		model.addAttribute("user", user);
+		return "user/home";
 	}
 
 	@RequestMapping(value="/default", method = RequestMethod.GET)
