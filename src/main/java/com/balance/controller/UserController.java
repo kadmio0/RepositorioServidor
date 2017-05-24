@@ -3,6 +3,8 @@ package com.balance.controller;
 import com.balance.model.User;
 import com.balance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,9 +49,11 @@ public class UserController {
 
     //LimitedUser Controller--------------------------------------------------------
 
-    @RequestMapping(value = "/user/profile/{id}",method = RequestMethod.GET)
-    public String viewProfile(@PathVariable Integer id,Model model) {
-        model.addAttribute("user",userService.getUserById(id));
+    @RequestMapping(value = "/user/profile",method = RequestMethod.GET)
+    public String viewProfile(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        model.addAttribute("user", user);
         return "limited/profile";
     }
 
