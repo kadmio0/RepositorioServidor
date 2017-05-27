@@ -20,7 +20,6 @@
 				<th>Email</th>
 				<th>View</th>
                 <th>Active</th>
-				<th>Delete</th>
 			</tr>
 			<tr th:each="user : ${userList}">
 				<td th:text="${user.id}">Id</td>
@@ -28,8 +27,8 @@
 				<td th:text="${user.lastName}">Last Name</td>
 				<td th:text="${user.email}">Email</td>
 				<td><a th:href="${'/admin/user/' + user.id}">View</a></td>
-				<td><a th:href="${'/admin/user/edit/' + user.id}">Active Edit</a></td>
-				<td><a th:href="${'/admin/user/delete/' + user.id}">Delete</a></td>
+				<td><a th:href="${'/admin/user/edit/' + user.id}">Edit Active</a></td>
+
 			</tr>
 		</table>
 

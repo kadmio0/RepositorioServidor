@@ -14,11 +14,15 @@
             <input type="hidden" th:field="*{name}"/>
             <input type="hidden" th:field="*{lastName}"/>
             <input type="hidden" th:field="*{roles}"/>
+            <input type="hidden" th:field="*{weigth}"/>
+            <input type="hidden" th:field="*{heigth}"/>
+            <input type="hidden" th:field="*{age}"/>
+            <input type="hidden" th:field="*{model}"/>
             <br class="form-group">
             <div>
                 <label class="col-sm-2 control-label">Active:</label>
-                <input type="text" th:field="*{active}" th:value="*{active}"/>
-            </div>
+                    <input type="checkbox" th:field="*{active}" th:value="*{active}" />
+             </div>
             </br>
             <div class="row">
                 <button type="submit" class="btn btn-default">Submit</button>
