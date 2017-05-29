@@ -32,12 +32,13 @@
 			<input type="submit" name="submit" value="Register User"/>
 			<label th:text="${successMessage}"></label>
 
-			<!--<div>
-				<select th:field="*{terminal}">
-					<option th:each="terminal : ${terminals}" th:value="${terminal.id}" th:text="${terminal.serial}">name</option>
-				</select><br/><br/>
-			</div>-->
-
+			<br/><label>Band model:</label><br/>
+			<select th:field="*{terminal}">
+				<option th:each="terminal : ${terminals}"
+						th:value="${terminal.getId()}"
+						th:text="${terminal.getTerminalName()}"></option>
+			</select>
+			<br/>
 
 
 

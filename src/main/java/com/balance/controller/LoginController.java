@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.balance.Mail.SmtpMailSender;
+import com.balance.model.Terminal;
+import com.balance.service.TerminalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -17,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.balance.model.User;
 import com.balance.service.UserService;
+
+import java.util.ArrayList;
 import java.util.Set;
 
 @Controller
@@ -24,6 +28,12 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
+	private TerminalService terminalService;
+
+	@Autowired
+	public void setTerminalService(TerminalService terminalService){
+		this.terminalService=terminalService;
+	}
 
 	@Autowired
 	private SmtpMailSender smtpMailSender;
@@ -36,6 +46,14 @@ public class LoginController {
 	@RequestMapping(value="/registration", method = RequestMethod.GET)
 	public String registration(Model model){
 		model.addAttribute("user", new User());
+		Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
+		ArrayList<Terminal> resp=new ArrayList<>();
+		for (Terminal t: listaterminals){
+			if(!t.isActive()){
+				resp.add(t);
+			}
+		}
+		model.addAttribute("terminals",resp);
 		return "registration";
 	}
 

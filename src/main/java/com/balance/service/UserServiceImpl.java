@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService{
 		user.setActive(true);
 		Role userRole = roleRepository.findByRole("ADMIN");
 		user.setRoles(new HashSet<Role>(Arrays.asList(userRole)));
+		terminalRepository.findOne(user.getTerminal().getId()).setActive(true);
 		userRepository.save(user);
 	}
 
