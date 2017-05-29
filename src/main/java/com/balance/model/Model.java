@@ -17,8 +17,8 @@ public class Model {
     @Column(name="name")
     private String name;
 
-    @OneToMany(mappedBy="model", cascade = CascadeType.ALL)
-    private Set<User> users;
+   // @OneToMany(mappedBy="terminal", cascade = CascadeType.ALL)
+   // private Set<Terminal> terminals;
 
     public int getId() {
         return id;
@@ -36,11 +36,5 @@ public class Model {
         this.name = name;
     }
 
-    public Set<User> getUsers() {
-        return users;
-    }
 
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
 }

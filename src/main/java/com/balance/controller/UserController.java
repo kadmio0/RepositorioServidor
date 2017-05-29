@@ -1,7 +1,9 @@
 package com.balance.controller;
 
+import com.balance.model.Terminal;
 import com.balance.model.User;
-import com.balance.service.ModelService;
+import com.balance.repository.TerminalRepository;
+import com.balance.service.TerminalService;
 import com.balance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,9 +13,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.w3c.dom.stylesheets.LinkStyle;
 
-import javax.jws.soap.SOAPBinding;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -22,7 +22,8 @@ import java.util.Iterator;
 public class UserController {
 
     private UserService userService;
-    private ModelService modelService;
+    private TerminalService terminalService;
+
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -30,9 +31,12 @@ public class UserController {
     }
 
     @Autowired
-    public void setModelService(ModelService modelService){
-        this.modelService=modelService;
+    public void setTerminalService(TerminalService terminalService){
+        this.terminalService=terminalService;
     }
+
+
+
 
     @RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET)
     public String showUser(@PathVariable Integer id, Model model) {
@@ -71,7 +75,20 @@ public class UserController {
     @RequestMapping(value = "/user/edit/{id}",method = RequestMethod.GET)
     public String editProfile(@PathVariable Integer id,Model model) {
         model.addAttribute("user",userService.getUserById(id));
-        model.addAttribute("models",modelService.listAllModels());
+
+        Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
+        ArrayList<Terminal> resp=new ArrayList<>();
+
+        for (Terminal t: listaterminals){
+            if(!t.isActive() || t==userService.getUserById((id)).getTerminal()){
+                resp.add(t);
+            }
+        }
+        Terminal ant=terminalService.getTerminalById(userService.getUserById(id).getTerminal().getId());
+        ant.setActive(false);
+        terminalService.deleteTerminal(userService.getUserById(id).getTerminal().getId());
+        terminalService.saveTerminal(ant);
+        model.addAttribute("terminals",resp);
         return "limited/editProfile";
     }
 

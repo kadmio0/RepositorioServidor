@@ -21,7 +21,14 @@ public class Terminal {
     private String terminalName;
 
     @Column(name="active")
-    private boolean active;
+    private boolean active=false;
+
+
+    @OneToOne(mappedBy = "terminal")
+    private User user;
+
+
+   // private Model model;
 
 
     public int getId() {
@@ -54,5 +61,13 @@ public class Terminal {
 
     public void setActive(boolean active) {
         this.active = active;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

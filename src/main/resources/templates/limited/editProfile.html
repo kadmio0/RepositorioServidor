@@ -32,10 +32,10 @@
             <input type="text"  th:field="*{age}"/>
 
             <br/><label>Band model:</label><br/>
-            <select th:field="*{model}">
-                <option th:each="model : ${models}"
-                        th:value="${model.getId()}"
-                        th:text="${model.getName()}"></option>
+            <select th:field="*{terminal}">
+                <option th:each="terminal : ${terminals}"
+                        th:value="${terminal.getId()}"
+                        th:text="${terminal.getTerminalName()}"></option>
             </select>
             <br/>
             <div class="row">

@@ -43,9 +43,9 @@ public class User {
 	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private Set<Role> roles;
 
-	@ManyToOne
-	@JoinColumn(name = "model_id")
-	private Model model;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "terminal_id")
+	private Terminal terminal;
 
 	private int weigth;
 
@@ -137,11 +137,11 @@ public class User {
 		return active;
 	}
 
-	public Model getModel() {
-		return model;
+	public Terminal getTerminal() {
+		return terminal;
 	}
 
-	public void setModel(Model model) {
-		this.model = model;
+	public void setTerminal(Terminal terminal) {
+		this.terminal = terminal;
 	}
 }

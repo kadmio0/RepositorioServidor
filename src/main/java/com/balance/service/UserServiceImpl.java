@@ -3,6 +3,7 @@ package com.balance.service;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import com.balance.repository.TerminalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -22,6 +23,8 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	@Autowired
+	private TerminalRepository terminalRepository;
 	@Override
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);
@@ -53,6 +56,8 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void saveUserEdited(User user){
+		terminalRepository.findOne(user.getTerminal().getId()).setActive(true);
 		userRepository.save(user);
+
 	}
 }
