@@ -29,9 +29,6 @@
 			<input type="password" th:field="*{password}" placeholder="Password" /><br/>
 			<label th:if="${#fields.hasErrors('password')}" th:errors="*{password}" /><br/>
 
-			<input type="submit" name="submit" value="Register User"/>
-			<label th:text="${successMessage}"></label>
-
 			<br/><label>Band model:</label><br/>
 			<select th:field="*{terminal}">
 				<option th:each="terminal : ${terminals}"
@@ -39,6 +36,11 @@
 						th:text="${terminal.getTerminalName()}"></option>
 			</select>
 			<br/>
+
+			<input type="submit" name="submit" value="Register User"/>
+			<label th:text="${successMessage}"></label>
+
+
 
 
 

@@ -49,7 +49,7 @@ public class LoginController {
 		Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
 		ArrayList<Terminal> resp=new ArrayList<>();
 		for (Terminal t: listaterminals){
-			if(!t.isActive()){
+			if(t.isActive()){
 				resp.add(t);
 			}
 		}
