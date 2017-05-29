@@ -7,7 +7,9 @@ import javax.validation.Valid;
 
 import com.balance.Mail.SmtpMailSender;
 import com.balance.model.Terminal;
+import com.balance.model.Token;
 import com.balance.service.TerminalService;
+import com.balance.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.balance.model.User;
 import com.balance.service.UserService;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -29,6 +32,12 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 	private TerminalService terminalService;
+	private TokenService tokenService;
+
+	@Autowired
+	public void setTokenService(TokenService tokenService) {
+		this.tokenService = tokenService;
+	}
 
 	@Autowired
 	public void setTerminalService(TerminalService terminalService){
@@ -125,7 +134,15 @@ public class LoginController {
 	public String sendMail(HttpServletRequest request) throws MessagingException,ServletException {
 		String text1= request.getParameter("email");
 		if(userService.findUserByEmail(request.getParameter("email"))!=null){
-			smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "recover password: <a href='http://localhost:8080/changepassword'>Recover password</a>");
+			SecureRandom random = new SecureRandom();
+			byte bytes[] = new byte[20];
+			random.nextBytes(bytes);
+			String token = bytes.toString();
+			User user=userService.findUserByEmail(request.getParameter("email"));
+			Token t=new Token(token);
+			t.setUser(userService.findUserByEmail(request.getParameter("email")));
+			tokenService.saveToken(t);
+			smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "Token password: "+token);
 			return "redirect:changepassword";
 		}
 
@@ -136,12 +153,17 @@ public class LoginController {
 		return "changepassword";
 	}
 	@RequestMapping(value="/changepasswordyes", method = RequestMethod.GET)
-	public String changepassword1(String email,String password) {
+	public String changepassword1(String email,String password,String token) {
 		User userExists = userService.findUserByEmail(email);
 		if (userExists != null) {
 			userExists.setPassword(password);
-			userService.saveUser(userExists);
+			if(tokenService.findByToken(token).getActive().equals(true) && tokenService.findByToken(token).getUser().equals(userExists)){
+				tokenService.findByToken(token).setActive(false);
+				tokenService.saveToken(tokenService.findByToken(token));
+				return "redirect:/";
+			}
+
 		}
-		return "redirect:/";
+		return "redirect:changepassword";
 	}
 }

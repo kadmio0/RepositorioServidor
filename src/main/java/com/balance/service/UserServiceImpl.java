@@ -25,6 +25,7 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	private TerminalRepository terminalRepository;
+
 	@Override
 	public User findUserByEmail(String email) {
 		return userRepository.findByEmail(email);

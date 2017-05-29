@@ -47,6 +47,7 @@ public class User {
 	@JoinColumn(name = "terminal_id")
 	private Terminal terminal;
 
+
 	private int weigth;
 
 	private int heigth;
