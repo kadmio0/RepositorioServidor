@@ -49,7 +49,7 @@ public class LoginController {
 		Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
 		ArrayList<Terminal> resp=new ArrayList<>();
 		for (Terminal t: listaterminals){
-			if(t.isActive()){
+			if(!t.isActive()){
 				resp.add(t);
 			}
 		}
@@ -124,8 +124,12 @@ public class LoginController {
 	@RequestMapping(value="/send-mail", method = RequestMethod.GET)
 	public String sendMail(HttpServletRequest request) throws MessagingException,ServletException {
 		String text1= request.getParameter("email");
-		smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "recover password: <a href='http://localhost:8080/changepassword'>Recover password</a>");
-		return "redirect:/";
+		if(userService.findUserByEmail(request.getParameter("email"))!=null){
+			smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "recover password: <a href='http://localhost:8080/changepassword'>Recover password</a>");
+			return "redirect:changepassword";
+		}
+
+		return "redirect:/forgot";
 	}
 	@RequestMapping(value="/changepassword", method = RequestMethod.GET)
 	public String changepassword() {
