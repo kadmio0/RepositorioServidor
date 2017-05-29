@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.view.RedirectView;
 import org.w3c.dom.stylesheets.LinkStyle;
 
 import javax.jws.soap.SOAPBinding;
@@ -68,12 +69,18 @@ public class UserController {
         return "limited/profile";
     }
 
-    @RequestMapping(value = "/user/edit/{id}",method = RequestMethod.GET)
-    public String editProfile(@PathVariable Integer id,Model model) {
-        model.addAttribute("user",userService.getUserById(id));
+
+
+    @RequestMapping(value = "/user/edit",method = RequestMethod.GET)
+    public String editProfile(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        model.addAttribute("user", user);
         model.addAttribute("models",modelService.listAllModels());
         return "limited/editProfile";
     }
+
+
 
     @RequestMapping(value = "/user",method = RequestMethod.POST)
     public String saveLimitedUser(@Valid User user) {
