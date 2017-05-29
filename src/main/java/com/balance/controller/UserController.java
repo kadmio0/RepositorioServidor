@@ -72,21 +72,23 @@ public class UserController {
         return "limited/profile";
     }
 
-    @RequestMapping(value = "/user/edit/{id}",method = RequestMethod.GET)
-    public String editProfile(@PathVariable Integer id,Model model) {
-        model.addAttribute("user",userService.getUserById(id));
+    @RequestMapping(value = "/user/edit",method = RequestMethod.GET)
+    public String editProfile(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        model.addAttribute("user",userService.getUserById(user.getId()));
 
         Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
         ArrayList<Terminal> resp=new ArrayList<>();
 
         for (Terminal t: listaterminals){
-            if(!t.isActive() || t==userService.getUserById((id)).getTerminal()){
+            if(!t.isActive() || t==userService.getUserById((user.getId())).getTerminal()){
                 resp.add(t);
             }
         }
-        Terminal ant=terminalService.getTerminalById(userService.getUserById(id).getTerminal().getId());
+        Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getId());
         ant.setActive(false);
-        terminalService.deleteTerminal(userService.getUserById(id).getTerminal().getId());
+        terminalService.deleteTerminal(userService.getUserById(user.getId()).getTerminal().getId());
         terminalService.saveTerminal(ant);
         model.addAttribute("terminals",resp);
         return "limited/editProfile";
