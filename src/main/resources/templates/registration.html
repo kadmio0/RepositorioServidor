@@ -2,6 +2,7 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 	<head>
 		<title>Registration Form</title>
+		<!--<link href="/style/bootstrap.css" th:href="@{/style/bootstrap.css}" rel="stylesheet" media="screen"/>-->
 	</head>
 	<body>
 		<form th:action="@{/}" method="get">
@@ -30,6 +31,17 @@
 
 			<input type="submit" name="submit" value="Register User"/>
 			<label th:text="${successMessage}"></label>
+
+			<!--<div>
+				<select th:field="*{terminal}">
+					<option th:each="terminal : ${terminals}" th:value="${terminal.id}" th:text="${terminal.serial}">name</option>
+				</select><br/><br/>
+			</div>-->
+
+
+
+
+
 		</form>
 	</body>
 </html>
