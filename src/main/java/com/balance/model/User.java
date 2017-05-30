@@ -48,6 +48,7 @@ public class User {
 	private Terminal terminal;
 
 
+
 	private int weigth;
 
 	private int heigth;
