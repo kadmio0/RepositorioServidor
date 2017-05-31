@@ -47,6 +47,7 @@ public class User {
 	@JoinColumn(name = "terminal_id")
 	private Terminal terminal;
 
+	private String serial;
 
 
 	private int weigth;
@@ -145,5 +146,13 @@ public class User {
 
 	public void setTerminal(Terminal terminal) {
 		this.terminal = terminal;
+	}
+
+	public String getSerial() {
+		return serial;
+	}
+
+	public void setSerial(String serial) {
+		this.serial = serial;
 	}
 }

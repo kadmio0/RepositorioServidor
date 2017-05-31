@@ -1,8 +1,10 @@
 package com.balance.controller;
 
+import com.balance.model.Band;
 import com.balance.model.Terminal;
 import com.balance.model.User;
 import com.balance.repository.TerminalRepository;
+import com.balance.service.BandService;
 import com.balance.service.TerminalService;
 import com.balance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +26,7 @@ public class UserController {
 
     private UserService userService;
     private TerminalService terminalService;
-
+    private BandService bandService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -34,6 +36,11 @@ public class UserController {
     @Autowired
     public void setTerminalService(TerminalService terminalService){
         this.terminalService=terminalService;
+    }
+
+    @Autowired
+    public void setBandService(BandService bandService){
+        this.bandService=bandService;
     }
 
 
@@ -79,20 +86,33 @@ public class UserController {
         User user = userService.findUserByEmail(auth.getName());
         model.addAttribute("user",userService.getUserById(user.getId()));
 
-        Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
-        ArrayList<Terminal> resp=new ArrayList<>();
 
-        for (Terminal t: listaterminals){
+/*
+        for (Band t: listbands){
             if(!t.isActive() || t==userService.getUserById((user.getId())).getTerminal()){
                 resp.add(t);
             }
-        }
-        Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getId());
+        }*/
+        /*Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getId());
         ant.setActive(false);
         terminalService.deleteTerminal(userService.getUserById(user.getId()).getTerminal().getId());
         terminalService.saveTerminal(ant);
         model.addAttribute("terminals",resp);
+        */
+        Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getId());
+        ant.setActive(false);
+        terminalService.deleteTerminal(userService.getUserById(user.getId()).getTerminal().getId());
+        terminalService.saveTerminal(ant);
+        model.addAttribute("bands",bandService.listAllBands());
+
+
+
+
         return "limited/editProfile";
+
+
+
+
     }
 
     @RequestMapping(value = "/user",method = RequestMethod.POST)
@@ -100,9 +120,8 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return "limited/editProfile";
         }
+
         userService.saveUserEdited(user);
         return "redirect:/user/profile/";
     }
-
-
 }
