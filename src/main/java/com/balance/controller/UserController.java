@@ -25,7 +25,7 @@ public class UserController {
     private BandModelService bandModelService;
     private BandService bandService;
     private CaloriesHistoryService caloriesHistoryService;
-
+    private PulseHistoryService pulseHistoryService;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -50,6 +50,11 @@ public class UserController {
     @Autowired
     public void setCaloriesHistoryService(CaloriesHistoryService caloriesHistoryService){
         this.caloriesHistoryService=caloriesHistoryService;
+    }
+
+    @Autowired
+    public void setPulseHistoryService(PulseHistoryService pulseHistoryService) {
+        this.pulseHistoryService = pulseHistoryService;
     }
 
     @RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET)
@@ -164,12 +169,31 @@ public class UserController {
         Iterator<CaloriesHistory> iterator = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         ArrayList<CaloriesHistory> resp=new ArrayList<CaloriesHistory>();
         while(iterator.hasNext()){
-            if(iterator.next().getUser().equals(user.getId())) {
-                resp.add(iterator.next());
+            CaloriesHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                resp.add(aux);
             }
         }
         model.addAttribute("user",user);
         model.addAttribute("calories",resp);
         return "limited/caloriesHistory";
+    }
+
+    @RequestMapping(value = "/user/PulseHistory", method = RequestMethod.GET)
+    public String getPulsesHistory(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        Iterator<PulseHistory> iterator = pulseHistoryService.listAllPulseHistory().iterator();
+        ArrayList<PulseHistory> resp = new ArrayList<PulseHistory>();
+        while(iterator.hasNext()){
+            PulseHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+               resp.add(aux);
+            }
+        }
+        System.out.println("LLEGO AQUISDIAJFIDSAJFOSDJSIO");
+        model.addAttribute("user",user);
+        model.addAttribute("pulses", resp);
+        return "limited/pulseHistory";
     }
 }

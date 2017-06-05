@@ -42,6 +42,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.
 				authorizeRequests()
+				.antMatchers("/PulseHistory").permitAll()
+				.antMatchers("/PulseHistories").permitAll()
+				.antMatchers("/getPulse").permitAll()
 				.antMatchers("/").permitAll()
 				.antMatchers("/forgot").permitAll()
 				.antMatchers("/login").permitAll()
