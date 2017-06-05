@@ -125,46 +125,4 @@ public class LoginController {
 		return "users";
 	}
 
-	//Email recover password
-	@RequestMapping(value="/forgot", method = RequestMethod.GET)
-	public String forgotpassword(){
-		return "forgot";
-	}
-
-	@RequestMapping(value="/send-mail", method = RequestMethod.GET)
-	public String sendMail(HttpServletRequest request) throws MessagingException,ServletException {
-		String text1= request.getParameter("email");
-		if(userService.findUserByEmail(request.getParameter("email"))!=null){
-			SecureRandom random = new SecureRandom();
-			byte bytes[] = new byte[20];
-			random.nextBytes(bytes);
-			String token = bytes.toString();
-			User user=userService.findUserByEmail(request.getParameter("email"));
-			Token t=new Token(token);
-			t.setUser(userService.findUserByEmail(request.getParameter("email")));
-			tokenService.saveToken(t);
-			smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "Token password: "+token);
-			return "redirect:changepassword";
-		}
-
-		return "redirect:/forgot";
-	}
-	@RequestMapping(value="/changepassword", method = RequestMethod.GET)
-	public String changepassword() {
-		return "changepassword";
-	}
-	@RequestMapping(value="/changepasswordyes", method = RequestMethod.GET)
-	public String changepassword1(String email,String password,String token) {
-		User userExists = userService.findUserByEmail(email);
-		if (userExists != null) {
-			userExists.setPassword(password);
-			if(tokenService.findByToken(token).getActive().equals(true) && tokenService.findByToken(token).getUser().equals(userExists)){
-				tokenService.findByToken(token).setActive(false);
-				tokenService.saveToken(tokenService.findByToken(token));
-				return "redirect:/";
-			}
-
-		}
-		return "redirect:changepassword";
-	}
 }
