@@ -28,17 +28,6 @@ public class Token {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name="limit_date")
-    @Temporal(TemporalType.DATE)
-    private Date limit_date;
-
-    public Date getLimit_date() {
-        return limit_date;
-    }
-
-    public void setLimit_date(Date limit_date) {
-        this.limit_date = limit_date;
-    }
 
     public Integer getId() {
         return id;

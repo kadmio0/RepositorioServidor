@@ -55,6 +55,18 @@ public class User {
 
 	private int age;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "token_id")
+	private Token token;
+
+	public Token getToken() {
+		return token;
+	}
+
+	public void setToken(Token token) {
+		this.token = token;
+	}
+
 	public String getBand() {
 		return band;
 	}

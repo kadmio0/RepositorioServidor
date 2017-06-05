@@ -51,6 +51,9 @@ public class TokenController {
             Token t=new Token(token);
             t.setUser(userService.findUserByEmail(request.getParameter("email")));
             tokenService.saveToken(t);
+            User user=userService.findUserByEmail(request.getParameter("email"));
+            user.setToken(t);
+            userService.saveUser(user);
             smtpMailSender.send(text1, "Balance Fitness Tracker: Recover your password", "<a href='http://localhost:8080/changepassword/ "+ token + " ' > Change password </a>");
             return "redirect:/";
         }
@@ -59,25 +62,29 @@ public class TokenController {
     @RequestMapping(value="/changepassword/{token}", method = RequestMethod.GET)
     public String changepassword(@PathVariable String token) {
         Token t=tokenService.findByToken("[B@"+token.substring(4));
-        if(t!=null){
+        if(t!=null && t.getActive()!=false && t.getUser()!=null){
             return "changepassword";
         }
         return "redirect:/";
     }
 
     @RequestMapping(value="/changepasswordyes", method = RequestMethod.GET)
-    public String changepasswordyes(String email,String password,String token) {
+    public String changepasswordyes(String email,String password) {
         User userExists = userService.findUserByEmail(email);
         if (userExists != null) {
-
-            if(tokenService.findByToken(token).getActive().equals(true) && tokenService.findByToken(token).getUser().equals(userExists)){
-                BCryptPasswordEncoder bCryptPasswordEncoder= new BCryptPasswordEncoder();
+            System.out.println("Llego aqui");
+            if(!userExists.getToken().equals(null)){
+                BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
                 userExists.setPassword(bCryptPasswordEncoder.encode(password));
-                tokenService.findByToken(token).setActive(false);
-                tokenService.saveToken(tokenService.findByToken(token));
+                tokenService.getTokenById(userExists.getToken().getId()).setActive(false);
+                Integer id=tokenService.getTokenById(userExists.getToken().getId()).getId();
+                tokenService.getTokenById(userExists.getToken().getId()).setUser(null);
+                userExists.setToken(null);
+                tokenService.deleteToken(id);
+                userExists.setToken(null);
+                userService.saveUser(userExists);
                 return "redirect:/";
             }
-
         }
         return "redirect:changepassword";
     }
