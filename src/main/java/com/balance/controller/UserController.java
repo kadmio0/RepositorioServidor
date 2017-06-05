@@ -29,6 +29,11 @@ public class UserController {
     private BandService bandService;
 
     @Autowired
+    public void setBandService(BandService bandService) {
+        this.bandService = bandService;
+    }
+
+    @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
@@ -36,11 +41,6 @@ public class UserController {
     @Autowired
     public void setTerminalService(TerminalService terminalService){
         this.terminalService=terminalService;
-    }
-
-    @Autowired
-    public void setBandService(BandService bandService){
-        this.bandService=bandService;
     }
 
 
@@ -80,39 +80,49 @@ public class UserController {
         return "limited/profile";
     }
 
+    @RequestMapping(value = "/user/index", method = RequestMethod.GET)
+    public String index(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        int steps = 0;
+        int sleep_quality = 0;
+
+        Iterator<Band> iterator = bandService.listAllBands().iterator();
+        Band aux = new Band();
+
+        while(iterator.hasNext()){
+            aux = iterator.next();
+            steps += aux.getSteps();
+            sleep_quality += aux.getSleep_quality();
+        };
+
+        model.addAttribute("countSteps",steps);
+        model.addAttribute("countSleep_quality", sleep_quality);
+        model.addAttribute("fecha_evento", aux.getFecha_evento().toString());
+        model.addAttribute("id",user.getId());
+        return "index";
+    }
+
     @RequestMapping(value = "/user/edit",method = RequestMethod.GET)
     public String editProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         model.addAttribute("user",userService.getUserById(user.getId()));
 
+        Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
+        ArrayList<Terminal> resp=new ArrayList<>();
 
-/*
-        for (Band t: listbands){
+        for (Terminal t: listaterminals){
             if(!t.isActive() || t==userService.getUserById((user.getId())).getTerminal()){
                 resp.add(t);
             }
-        }*/
-        /*Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getId());
-        ant.setActive(false);
-        terminalService.deleteTerminal(userService.getUserById(user.getId()).getTerminal().getId());
-        terminalService.saveTerminal(ant);
-        model.addAttribute("terminals",resp);
-        */
+        }
         Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getId());
         ant.setActive(false);
         terminalService.deleteTerminal(userService.getUserById(user.getId()).getTerminal().getId());
         terminalService.saveTerminal(ant);
-        model.addAttribute("bands",bandService.listAllBands());
-
-
-
-
+        model.addAttribute("terminals",resp);
         return "limited/editProfile";
-
-
-
-
     }
 
     @RequestMapping(value = "/user",method = RequestMethod.POST)
@@ -120,8 +130,9 @@ public class UserController {
         if(bindingResult.hasErrors()){
             return "limited/editProfile";
         }
-
         userService.saveUserEdited(user);
         return "redirect:/user/profile/";
     }
+
+
 }

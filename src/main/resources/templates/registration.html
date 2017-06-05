@@ -34,7 +34,7 @@
 			<select th:field="*{terminal}">
 				<option th:each="terminal : ${terminals}"
 						th:value="${terminal.getId()}"
-						th:text="${terminal.getTerminalName()}"></option>
+						th:text="${terminal.serial}"></option>
 			</select>
 			<br/>
 

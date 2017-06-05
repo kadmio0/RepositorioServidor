@@ -125,6 +125,7 @@ public class LoginController {
 		return "users";
 	}
 
+	//Email recover password
 	@RequestMapping(value="/forgot", method = RequestMethod.GET)
 	public String forgotpassword(){
 		return "forgot";

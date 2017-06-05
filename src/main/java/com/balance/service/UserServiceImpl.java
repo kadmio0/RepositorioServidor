@@ -1,10 +1,8 @@
 package com.balance.service;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import com.balance.model.Terminal;
 import com.balance.repository.TerminalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -60,15 +58,8 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void saveUserEdited(User user){
-		Iterable<Terminal> listterminals=terminalRepository.findAll();
-		for(Terminal t : listterminals){
-			//(user.getTerminal()==t)||
-			if(user.getSerial()==t.getSerial() && !t.isActive())
-			{
-				terminalRepository.findOne(t.getId()).setActive(true);
-				user.setTerminal(t);
-			}
-		}
+		terminalRepository.findOne(user.getTerminal().getId()).setActive(true);
 		userRepository.save(user);
+
 	}
 }

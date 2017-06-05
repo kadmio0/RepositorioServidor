@@ -5,8 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 /**
- * Created by KEVIN on 30/05/2017.
+ * Created by da_20 on 31/5/2017.
  */
-@Repository("bandRepository")
+@Repository
 public interface BandRepository extends JpaRepository<Band, Integer> {
 }

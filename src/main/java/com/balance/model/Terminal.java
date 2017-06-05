@@ -17,15 +17,19 @@ public class Terminal {
     @Column(name="serial")
     private String serial;
 
+    @Column(name="terminal_name")
+    private String terminalName;
+
     @Column(name="active")
     private boolean active=false;
+
 
     @OneToOne(mappedBy = "terminal")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name="band_id")
-    private Band band;
+
+   // private Model model;
+
 
     public int getId() {
         return id;
@@ -43,6 +47,14 @@ public class Terminal {
         this.serial = serial;
     }
 
+    public String getTerminalName() {
+        return terminalName;
+    }
+
+    public void setTerminalName(String terminalName) {
+        this.terminalName = terminalName;
+    }
+
     public boolean isActive() {
         return active;
     }
@@ -57,13 +69,5 @@ public class Terminal {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public Band getBand() {
-        return band;
-    }
-
-    public void setBand(Band band) {
-        this.band = band;
     }
 }

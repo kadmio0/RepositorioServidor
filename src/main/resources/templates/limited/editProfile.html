@@ -14,7 +14,6 @@
             <input type="hidden" th:field="*{email}" />
             <input type="hidden" th:field="*{password}" />
             <input type="hidden" th:field="*{roles}" />
-            <input type="hidden" th:field="*{terminal}" />
             <label>Name:</label><br/>
             <input type="text" th:field="*{name}" placeholder="Nombre" /><br/>
             <label th:if="${#fields.hasErrors('name')}" th:errors="*{name}" /><br/>
@@ -34,16 +33,11 @@
             <input type="number"  th:field="*{age}"/>
 
             <br/><label>Band model:</label><br/>
-            <!--<select th:field="*{terminal}">-->
-            <select>
-                <option th:each="band : ${bands}"
-                        th:value="${band.getId()}"
-                        th:text="${band.getName()}"></option>
+            <select th:field="*{terminal}">
+                <option th:each="terminal : ${terminals}"
+                        th:value="${terminal.getId()}"
+                        th:text="${terminal.getTerminalName()}"></option>
             </select>
-
-            <p>Serial: </p>
-            <input type="number"  th:field="*{serial}"/>
-
             <br/>
             <div class="row">
                 <button type="submit" class="btn btn-default">Done</button>
