@@ -1,14 +1,8 @@
 package com.balance.controller;
 
-import com.balance.model.Band;
-import com.balance.model.BandModel;
-import com.balance.model.Terminal;
-import com.balance.model.User;
+import com.balance.model.*;
 import com.balance.repository.TerminalRepository;
-import com.balance.service.BandModelService;
-import com.balance.service.BandService;
-import com.balance.service.TerminalService;
-import com.balance.service.UserService;
+import com.balance.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -30,6 +24,8 @@ public class UserController {
     private TerminalService terminalService;
     private BandModelService bandModelService;
     private BandService bandService;
+    private CaloriesHistoryService caloriesHistoryService;
+
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -51,6 +47,10 @@ public class UserController {
         this.bandService=bandService;
     }
 
+    @Autowired
+    public void setCaloriesHistoryService(CaloriesHistoryService caloriesHistoryService){
+        this.caloriesHistoryService=caloriesHistoryService;
+    }
 
     @RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET)
     public String showUser(@PathVariable Integer id, Model model) {
@@ -95,9 +95,11 @@ public class UserController {
         User user = userService.findUserByEmail(auth.getName());
         int steps = 0;
         int sleep_quality = 0;
-
+        double calories=0;
         Iterator<Band> iterator = bandService.listAllBands().iterator();
+        Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         Band aux = new Band();
+        CaloriesHistory caux= new CaloriesHistory();
 
         while(iterator.hasNext()){
             aux = iterator.next();
@@ -105,9 +107,16 @@ public class UserController {
             sleep_quality += aux.getSleep_quality();
         };
 
+
+        while(iterator2.hasNext()){
+                caux = iterator2.next();
+                calories += caux.getCalories();
+
+        }
         model.addAttribute("countSteps",steps);
         model.addAttribute("countSleep_quality", sleep_quality);
         model.addAttribute("fecha_evento", aux.getFecha_evento().toString());
+        model.addAttribute("countCalories",calories);
         model.addAttribute("id",user.getId());
         return "index";
     }
@@ -149,5 +158,22 @@ public class UserController {
 
         userService.saveUserEdited(user);
         return "redirect:/user/profile/";
+    }
+
+    @RequestMapping(value = "/user/CaloriesHistory", method = RequestMethod.GET)
+    public String getCaloriesHistory(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+
+        Iterator<CaloriesHistory> iterator = caloriesHistoryService.listAllCaloriesHistorys().iterator();
+        ArrayList<CaloriesHistory> resp=new ArrayList<CaloriesHistory>();
+        while(iterator.hasNext()){
+            if(iterator.next().getUser().equals(user.getId())) {
+                resp.add(iterator.next());
+            }
+        }
+        model.addAttribute("user",user);
+        model.addAttribute("calories",resp);
+        return "limited/caloriesHistory";
     }
 }
