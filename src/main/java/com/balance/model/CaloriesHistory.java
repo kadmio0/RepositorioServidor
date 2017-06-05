@@ -24,6 +24,15 @@ public class CaloriesHistory {
     @Column(name="date")
     private Date date;
 
+    public CaloriesHistory(double calories, Integer user, Date date) {
+        this.calories = calories;
+        this.user = user;
+        this.date = date;
+    }
+
+    public CaloriesHistory() {
+    }
+
     public Long getId() {
         return id;
     }

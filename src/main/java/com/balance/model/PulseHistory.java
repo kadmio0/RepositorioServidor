@@ -9,11 +9,18 @@ public class PulseHistory {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="pulseHistory_id")
     private int id;
-    int bpm;
-    Date date;
+    private int bpm;
+    private Date date;
     private Integer user;
 
+    public PulseHistory(int bpm, Date date, Integer user) {
+        this.bpm = bpm;
+        this.date = date;
+        this.user = user;
+    }
 
+    public PulseHistory() {
+    }
 
     public int getId() {
         return id;

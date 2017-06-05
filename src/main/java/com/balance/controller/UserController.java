@@ -94,35 +94,6 @@ public class UserController {
         return "limited/profile";
     }
 
-    @RequestMapping(value = "/user/index", method = RequestMethod.GET)
-    public String index(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User user = userService.findUserByEmail(auth.getName());
-        int steps = 0;
-        double calories=0;
-        Iterator<Band> iterator = bandService.listAllBands().iterator();
-        Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
-        Band aux = new Band();
-        CaloriesHistory caux= new CaloriesHistory();
-
-        while(iterator.hasNext()){
-            aux = iterator.next();
-            steps += aux.getSteps();
-        };
-
-
-        while(iterator2.hasNext()){
-                caux = iterator2.next();
-                calories += caux.getCalories();
-
-        }
-        model.addAttribute("countSteps",steps);
-        model.addAttribute("countCalories",calories);
-        model.addAttribute("id",user.getId());
-        return "index";
-    }
-
-
     @RequestMapping(value = "/user/edit",method = RequestMethod.GET)
     public String editProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

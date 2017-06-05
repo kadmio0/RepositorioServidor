@@ -3,28 +3,70 @@
 <head lang="en">
     <title>UserProfile</title>
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
 <form th:action="@{/logout}" method="get">
-    <button name="registration" type="Submit">Logout</button>
+    <button class="btn btn-default" type="submit">Logout</button>
+    <a class="btn btn-default" th:href="${'/user/profile/'}" role="button">Profile</a>
+    <a class="btn btn-default" th:href="${'/user/CaloriesHistory'}" role="button">Historial de calorias</a>
+    <a class="btn btn-default" th:href="${'/user/PulseHistory'}" role="button">Historial de pulsos</a>
 </form>
+<br></br>
+<br></br>
+<br></br>
+<br></br>
 <div class="container">
-    <div>
-        <p>Hola</p>
-        <a th:href="${'/user/profile/'}">Profile</a>
-    </div>
-    <div>
-        <p>ver</p>
-        <a th:href="${'/user/index'}">informacion</a>
-    </div>
-    <div>
-        <p>ver</p>
-        <a th:href="${'/user/CaloriesHistory'}">Calories History</a>
-    </div>
-    <div>
-        <p>ver</p>
-        <a th:href="${'/user/PulseHistory'}">Pulse History</a>
-    </div>
+    <script th:inline="javascript">
+        var idValue = /*[[${id}]]*/;
+        function updateSteps(){
+            $.getJSON( "/getSteps/" + idValue, function( data ) {
+                $('#pasos').html(data.steps);
+                if(data.steps > 100){
+                    $('#pasos').removeClass("label-warning")
+                    $('#pasos').addClass("label-danger");
+                }else{
+                    $('#pasos').removeClass("label-danger")
+                    $('#pasos').addClass("label-warning");
+                }
+                //document.getElementById('pasos').innerHTML = data.steps;
+            });
+        }
+
+        function updateCalories(){
+            $.getJSON( "/getCalories/" + idValue, function( data ) {
+                $('#calories').html(data.calories);
+                if(data.calories > 1000){
+                    $('#calories').removeClass("label-warning")
+                    $('#calories').addClass("label-danger");
+                }else{
+                    $('#calories').removeClass("label-danger")
+                    $('#calories').addClass("label-warning");
+                }
+                //document.getElementById('calories').innerHTML = data.calories;
+            });
+        }
+
+        setInterval(function(){
+            updateSteps();
+            updateSleep_quality();
+            updateCalories();
+            //location.reload();
+        }, 1000);
+    </script>
+
+    <p>Pasos</p>
+    <span id="pasos" class="label" th:text="${countSteps}">countSteps</span> <br/><br/>
+
+    <p>Quemando calorias</p>
+    <span id="calories" class="label" th:text="${countCalories}">countCalories</span>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <br></br>
+    <textarea name="" id="" cols="30" rows="10"></textarea>
 </div>
 </body>
 </html>

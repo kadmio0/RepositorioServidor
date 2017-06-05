@@ -6,12 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.balance.Mail.SmtpMailSender;
-import com.balance.model.Band;
-import com.balance.model.Terminal;
-import com.balance.model.Token;
-import com.balance.service.BandModelService;
-import com.balance.service.TerminalService;
-import com.balance.service.TokenService;
+import com.balance.model.*;
+import com.balance.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -21,11 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import com.balance.model.User;
-import com.balance.service.UserService;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Set;
 
 @Controller
@@ -36,6 +31,22 @@ public class LoginController {
 	private TerminalService terminalService;
 	private TokenService tokenService;
 	private BandModelService bandModelService;
+	private BandService bandService;
+	private CaloriesHistoryService caloriesHistoryService;
+	private PulseHistoryService pulseHistoryService;
+	@Autowired
+	public void setBandService(BandService bandService) {
+		this.bandService = bandService;
+	}
+	@Autowired
+	public void setCaloriesHistoryService(CaloriesHistoryService caloriesHistoryService) {
+		this.caloriesHistoryService = caloriesHistoryService;
+	}
+	@Autowired
+	public void setPulseHistoryService(PulseHistoryService pulseHistoryService) {
+		this.pulseHistoryService = pulseHistoryService;
+	}
+
 	@Autowired
 	public void setTokenService(TokenService tokenService) {
 		this.tokenService = tokenService;
@@ -108,6 +119,27 @@ public class LoginController {
 		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
 		model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
 		model.addAttribute("user", user);
+		int steps = 0;
+		double calories=0;
+		Iterator<Band> iterator = bandService.listAllBands().iterator();
+		Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
+		Band aux = new Band();
+		CaloriesHistory caux= new CaloriesHistory();
+
+		while(iterator.hasNext()){
+			aux = iterator.next();
+			steps += aux.getSteps();
+		};
+
+
+		while(iterator2.hasNext()){
+			caux = iterator2.next();
+			calories += caux.getCalories();
+
+		}
+		model.addAttribute("countSteps",steps);
+		model.addAttribute("countCalories",calories);
+		model.addAttribute("id",user.getId());
 		return "user/home";
 	}
 
