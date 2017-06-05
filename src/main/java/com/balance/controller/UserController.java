@@ -94,7 +94,6 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         int steps = 0;
-        int sleep_quality = 0;
         double calories=0;
         Iterator<Band> iterator = bandService.listAllBands().iterator();
         Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
@@ -104,7 +103,6 @@ public class UserController {
         while(iterator.hasNext()){
             aux = iterator.next();
             steps += aux.getSteps();
-            sleep_quality += aux.getSleep_quality();
         };
 
 
@@ -114,8 +112,6 @@ public class UserController {
 
         }
         model.addAttribute("countSteps",steps);
-        model.addAttribute("countSleep_quality", sleep_quality);
-        model.addAttribute("fecha_evento", aux.getFecha_evento().toString());
         model.addAttribute("countCalories",calories);
         model.addAttribute("id",user.getId());
         return "index";

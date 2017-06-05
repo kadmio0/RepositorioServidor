@@ -36,7 +36,6 @@ public class BandController {
     }
     @RequestMapping(value = "/band", method = RequestMethod.POST)
     public Band saveBand(@Valid Band band, BindingResult bindingResult, Model model) {
-        band.setFecha_evento(new Date());
         band.setFecha_registro(new Date());
         /*if (band.getFecha_registro().before(band.getFecha_evento())) {
             bandService.saveBand(band);
@@ -48,25 +47,22 @@ public class BandController {
     public ResponseEntity<Iterable<Band>> getBands() {
         return new ResponseEntity(bandService.listAllBands(), HttpStatus.NOT_FOUND);
     }
+
     @RequestMapping(value = "/getSteps/{id}", method = RequestMethod.GET)
     public Band getBandSteps(@PathVariable Integer id) {
         Integer steps = 0;
-        Integer sleep_quality = 0;
 
         Iterator<Band> iterator = bandService.listAllBands().iterator();
 
         while(iterator.hasNext()){
             if(iterator.next().getUser().equals(id)) {
-                Band aux = iterator.next();
-                steps += aux.getSteps();
-                sleep_quality += aux.getSleep_quality();
+                steps += iterator.next().getSteps();
             }
 
         };
 
         Band band = new Band();
         band.setSteps(steps);
-        band.setSleep_quality(sleep_quality);
         band.setId(67626L);
         return band;
     }
