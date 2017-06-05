@@ -33,11 +33,16 @@
             <input type="number"  th:field="*{age}"/>
 
             <br/><label>Band model:</label><br/>
-            <select th:field="*{terminal}">
-                <option th:each="terminal : ${terminals}"
-                        th:value="${terminal.getId()}"
-                        th:text="${terminal.getTerminalName()}"></option>
+            <select th:field="*{band}">
+                <option th:each="bandModel : ${bands}"
+                        th:value="${bandModel.getName()}"
+                        th:text="${bandModel.getName()}"></option>
             </select>
+
+            <p>Serial: </p>
+            <input type="text" th:field="*{terminal}"/>
+
+
             <br/>
             <div class="row">
                 <button type="submit" class="btn btn-default">Done</button>

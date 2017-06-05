@@ -5,6 +5,8 @@ import com.balance.repository.TerminalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Iterator;
+
 /**
  * Created by KEVIN on 26/05/2017.
  */
@@ -43,5 +45,17 @@ public class TerminalServiceImpl implements TerminalService {
         }
 
     }
+
+    @Override
+    public Terminal getTerminalBySerial(int serial){
+        Iterator<Terminal> iterator=terminalRepository.findAll().iterator();
+        while(iterator.hasNext()){
+            if(serial==iterator.next().getSerial()) {
+                return iterator.next();
+            }
+        }
+        return null;
+    }
+
 
 }

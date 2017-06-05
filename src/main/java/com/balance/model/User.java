@@ -47,13 +47,21 @@ public class User {
 	@JoinColumn(name = "terminal_id")
 	private Terminal terminal;
 
-
+	private String band;
 
 	private int weigth;
 
 	private int heigth;
 
 	private int age;
+
+	public String getBand() {
+		return band;
+	}
+
+	public void setBand(String band) {
+		this.band = band;
+	}
 
 	public int getId() {
 		return id;
@@ -146,4 +154,6 @@ public class User {
 	public void setTerminal(Terminal terminal) {
 		this.terminal = terminal;
 	}
+
+
 }

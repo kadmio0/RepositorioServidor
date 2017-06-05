@@ -13,5 +13,5 @@ public interface TerminalService {
     void deleteTerminal(Integer id);
 
     void setActiveTerminalById(Integer id);
-
+    Terminal getTerminalBySerial(int serial);
 }

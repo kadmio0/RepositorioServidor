@@ -10,49 +10,25 @@ import java.util.Set;
 @Table(name = "terminal")
 public class Terminal {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="terminal_id")
-    private int id;
-
-    @Column(name="serial")
-    private String serial;
-
-    @Column(name="terminal_name")
-    private String terminalName;
+    private int serial;
 
     @Column(name="active")
     private boolean active=false;
 
-
     @OneToOne(mappedBy = "terminal")
     private User user;
 
+    @ManyToOne
+    @JoinColumn(name="band_model_id")
+    private BandModel bandModel;
 
-   // private Model model;
-
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getSerial() {
+    public int getSerial() {
         return serial;
     }
 
-    public void setSerial(String serial) {
+    public void setSerial(int serial) {
         this.serial = serial;
-    }
-
-    public String getTerminalName() {
-        return terminalName;
-    }
-
-    public void setTerminalName(String terminalName) {
-        this.terminalName = terminalName;
     }
 
     public boolean isActive() {
@@ -69,5 +45,13 @@ public class Terminal {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public BandModel getBandModel() {
+        return bandModel;
+    }
+
+    public void setBandModel(BandModel bandModel) {
+        this.bandModel = bandModel;
     }
 }

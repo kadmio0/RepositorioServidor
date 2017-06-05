@@ -6,8 +6,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.balance.Mail.SmtpMailSender;
+import com.balance.model.Band;
 import com.balance.model.Terminal;
 import com.balance.model.Token;
+import com.balance.service.BandModelService;
 import com.balance.service.TerminalService;
 import com.balance.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +35,7 @@ public class LoginController {
 	private UserService userService;
 	private TerminalService terminalService;
 	private TokenService tokenService;
-
+	private BandModelService bandModelService;
 	@Autowired
 	public void setTokenService(TokenService tokenService) {
 		this.tokenService = tokenService;
@@ -45,7 +47,13 @@ public class LoginController {
 	}
 
 	@Autowired
+	public void setBandModelService(BandModelService bandModelService){
+		this.bandModelService=bandModelService;
+	}
+
+	@Autowired
 	private SmtpMailSender smtpMailSender;
+
 
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public String login(){
@@ -55,14 +63,7 @@ public class LoginController {
 	@RequestMapping(value="/registration", method = RequestMethod.GET)
 	public String registration(Model model){
 		model.addAttribute("user", new User());
-		Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
-		ArrayList<Terminal> resp=new ArrayList<>();
-		for (Terminal t: listaterminals){
-			if(!t.isActive()){
-				resp.add(t);
-			}
-		}
-		model.addAttribute("terminals",resp);
+		model.addAttribute("bands",bandModelService.listAllBandModels());
 		return "registration";
 	}
 
@@ -72,11 +73,17 @@ public class LoginController {
 		if (userExists != null) {
 			bindingResult.rejectValue("email", "error.user", "There is already a user registered with the email provided");
 		}
-		if (!bindingResult.hasErrors()) {
+		if(user.getTerminal()==null){
+			return "redirect:/registration";
+		}
+		if (!bindingResult.hasErrors() && !terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
 			userService.saveUser(user);
 			model.addAttribute("successMessage", "El usuario se registro correctamente");
 			model.addAttribute("user", new User());
+		}else{
+			return "redirect:/registration";
 		}
+
 		return "registration";
 	}
 

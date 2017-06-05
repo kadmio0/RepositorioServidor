@@ -1,9 +1,11 @@
 package com.balance.controller;
 
 import com.balance.model.Band;
+import com.balance.model.BandModel;
 import com.balance.model.Terminal;
 import com.balance.model.User;
 import com.balance.repository.TerminalRepository;
+import com.balance.service.BandModelService;
 import com.balance.service.BandService;
 import com.balance.service.TerminalService;
 import com.balance.service.UserService;
@@ -26,12 +28,8 @@ public class UserController {
 
     private UserService userService;
     private TerminalService terminalService;
+    private BandModelService bandModelService;
     private BandService bandService;
-
-    @Autowired
-    public void setBandService(BandService bandService) {
-        this.bandService = bandService;
-    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -43,7 +41,15 @@ public class UserController {
         this.terminalService=terminalService;
     }
 
+    @Autowired
+    public void setBandModelService(BandModelService bandModelService){
+        this.bandModelService=bandModelService;
+    }
 
+    @Autowired
+    public void setBandService(BandService bandService){
+        this.bandService=bandService;
+    }
 
 
     @RequestMapping(value = "/admin/user/{id}", method = RequestMethod.GET)
@@ -76,6 +82,9 @@ public class UserController {
     public String viewProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
+        Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getSerial());
+        ant.setActive(true);
+        terminalService.saveTerminal(ant);
         model.addAttribute("user", user);
         return "limited/profile";
     }
@@ -103,36 +112,42 @@ public class UserController {
         return "index";
     }
 
+
     @RequestMapping(value = "/user/edit",method = RequestMethod.GET)
     public String editProfile(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
         model.addAttribute("user",userService.getUserById(user.getId()));
 
-        Iterable<Terminal> listaterminals=terminalService.listAllTerminals();
-        ArrayList<Terminal> resp=new ArrayList<>();
-
-        for (Terminal t: listaterminals){
-            if(!t.isActive() || t==userService.getUserById((user.getId())).getTerminal()){
-                resp.add(t);
-            }
-        }
-        Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getId());
+        Terminal ant=terminalService.getTerminalById(userService.getUserById(user.getId()).getTerminal().getSerial());
         ant.setActive(false);
-        terminalService.deleteTerminal(userService.getUserById(user.getId()).getTerminal().getId());
+
         terminalService.saveTerminal(ant);
-        model.addAttribute("terminals",resp);
+        model.addAttribute("bands",bandModelService.listAllBandModels());
+
         return "limited/editProfile";
     }
 
     @RequestMapping(value = "/user",method = RequestMethod.POST)
-    public String saveLimitedUser(@Valid User user, BindingResult bindingResult, Model model) {
-        if(bindingResult.hasErrors()){
+    public String saveLimitedUser(@Valid User user, BindingResult bindingResult) {
+        if(user.getTerminal()==null) {
+            return "redirect:/user/edit";
+        }
+        Terminal newTerminal = terminalService.getTerminalById(user.getTerminal().getSerial());
+
+        if(!newTerminal.getBandModel().getName().equals(user.getBand()) || newTerminal.isActive()){
+            return "redirect:/user/edit";
+        }
+
+        if(bindingResult.hasErrors()) {
             return "limited/editProfile";
         }
+
+        newTerminal.setActive(true);
+        terminalService.saveTerminal(newTerminal);
+        user.setTerminal(newTerminal);
+
         userService.saveUserEdited(user);
         return "redirect:/user/profile/";
     }
-
-
 }

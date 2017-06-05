@@ -21,7 +21,9 @@
         <h3>Wheigth:</h3>
         <p th:text="${user.weigth}">weigth</p>
         <h3>Model band:</h3>
-        <p th:text="${user.terminal==null?'':user.terminal.getTerminalName()}">Model band</p>
+        <p th:text="${user.getTerminal()==null?'':user.getTerminal().getBandModel().getName()}">Model band</p>
+        <h3>Serial:</h3>
+        <p th:text="${user.getTerminal()==null?'':user.getTerminal().getSerial()}">Serial</p>
 
 
 
