@@ -15,13 +15,13 @@
         <h3>History:</h3>
         <table class="table table-striped">
             <tr>
-                <th>Id</th>
+          
                 <th>Date Time</th>
                 <th>Heartbeat</th>
 
             </tr>
             <tr th:each="pulse : ${pulses}">
-                <td th:text="${pulse.id}">Id</td>
+
                 <td th:text="${pulse.date}">date</td>
                 <td th:text="${pulse.bpm}">bpm</td>
 
