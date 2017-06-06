@@ -1,10 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Calories History</title>
+    <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
+<form th:action="@{/user/home}" method="get">
+    <button name="registration" type="Submit">Home</button>
+</form>
+<div class="container">
+    <div>
+        <h3>Name: </h3>
+        <p th:text="${user.name}">name</p>
+        <h3>History:</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>latitude</th>
+                <th>longitude</th>
+                <th>Date Time</th>
 
+            </tr>
+            <tr th:each="location : ${locations}">
+                <td th:text="${location.latitude}">latitude</td>
+                <td th:text="${location.longitude}">longitude</td>
+                <td th:text="${location.date}">date</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
 </body>
 </html>

@@ -29,7 +29,6 @@ public class LoginController {
 	@Autowired
 	private UserService userService;
 	private TerminalService terminalService;
-	private TokenService tokenService;
 	private BandModelService bandModelService;
 	private BandService bandService;
 	private CaloriesHistoryService caloriesHistoryService;
@@ -55,11 +54,6 @@ public class LoginController {
 	}
 
 	@Autowired
-	public void setTokenService(TokenService tokenService) {
-		this.tokenService = tokenService;
-	}
-
-	@Autowired
 	public void setTerminalService(TerminalService terminalService){
 		this.terminalService=terminalService;
 	}
@@ -68,10 +62,6 @@ public class LoginController {
 	public void setBandModelService(BandModelService bandModelService){
 		this.bandModelService=bandModelService;
 	}
-
-	@Autowired
-	private SmtpMailSender smtpMailSender;
-
 
 	@RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
 	public String login(){
