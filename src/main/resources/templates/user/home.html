@@ -8,10 +8,13 @@
 </head>
 <body>
 <form th:action="@{/logout}" method="get">
-    <button class="btn btn-default" type="submit">Logout</button>
-    <a class="btn btn-default" th:href="${'/user/profile/'}" role="button">Profile</a>
-    <a class="btn btn-default" th:href="${'/user/CaloriesHistory'}" role="button">Historial de calorias</a>
-    <a class="btn btn-default" th:href="${'/user/PulseHistory'}" role="button">Historial de pulsos</a>
+    <div class="btn-group" role="group" aria-label="...">
+        <button type="submit" class="btn btn-default">Logout</button>
+        <a th:href="${'/user/profile/'}" type="button" class="btn btn-default">Perfil</a>
+        <a th:href="${'/user/CaloriesHistory'}" type="button" class="btn btn-default">Historial de calorias</a>
+        <a th:href="${'/user/PulseHistory'}" type="button" class="btn btn-default">Historial de pulsos</a>
+        <a th:href="${'/user/StepsHistory'}" type="button" class="btn btn-default">Historial de distancias</a>
+    </div>
 </form>
 <br></br>
 <br></br>
@@ -23,44 +26,35 @@
         function updateSteps(){
             $.getJSON( "/getSteps/" + idValue, function( data ) {
                 $('#pasos').html(data.steps);
-                if(data.steps > 100){
-                    $('#pasos').removeClass("label-warning")
-                    $('#pasos').addClass("label-danger");
-                }else{
-                    $('#pasos').removeClass("label-danger")
-                    $('#pasos').addClass("label-warning");
-                }
-                //document.getElementById('pasos').innerHTML = data.steps;
             });
         }
 
         function updateCalories(){
             $.getJSON( "/getCalories/" + idValue, function( data ) {
                 $('#calories').html(data.calories);
-                if(data.calories > 1000){
-                    $('#calories').removeClass("label-warning")
-                    $('#calories').addClass("label-danger");
-                }else{
-                    $('#calories').removeClass("label-danger")
-                    $('#calories').addClass("label-warning");
-                }
-                //document.getElementById('calories').innerHTML = data.calories;
             });
         }
 
+        function updateDistance(){
+            $.getJSON( "/getDistance/" + idValue, function( data ) {
+                $('#distancia').html(data.distance);
+            });
+        }
         setInterval(function(){
             updateSteps();
-            updateSleep_quality();
+            updateDistance();
             updateCalories();
-            //location.reload();
         }, 1000);
     </script>
 
     <p>Pasos</p>
-    <span id="pasos" class="label" th:text="${countSteps}">countSteps</span> <br/><br/>
+    <span id="pasos" class="label label-primary" th:text="${countSteps}">countSteps</span> <br/><br/>
+
+    <p>Distancia</p>
+    <span id="distancia" class="label label-primary" th:text="${countDistance}">countDistance</span> <br/><br/>
 
     <p>Quemando calorias</p>
-    <span id="calories" class="label" th:text="${countCalories}">countCalories</span>
+    <span id="calories" class="label label-primary" th:text="${countCalories}">countCalories</span>
     <br></br>
     <br></br>
     <br></br>

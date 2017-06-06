@@ -23,9 +23,20 @@ public class UserController {
     private UserService userService;
     private TerminalService terminalService;
     private BandModelService bandModelService;
-    private BandService bandService;
     private CaloriesHistoryService caloriesHistoryService;
     private PulseHistoryService pulseHistoryService;
+    private StepsHistoryService stepsHistoryService;
+    private LocationHistoryService locationHistoryService;
+
+    @Autowired
+    public void setLocationHistoryService(LocationHistoryService locationHistoryService) {
+        this.locationHistoryService = locationHistoryService;
+    }
+
+    @Autowired
+    public void setStepsHistoryService(StepsHistoryService stepsHistoryService) {
+        this.stepsHistoryService = stepsHistoryService;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -40,11 +51,6 @@ public class UserController {
     @Autowired
     public void setBandModelService(BandModelService bandModelService){
         this.bandModelService=bandModelService;
-    }
-
-    @Autowired
-    public void setBandService(BandService bandService){
-        this.bandService=bandService;
     }
 
     @Autowired
@@ -173,6 +179,8 @@ public class UserController {
         return "redirect:/user/profile/";
     }
 
+
+    //Historiales
     @RequestMapping(value = "/user/CaloriesHistory", method = RequestMethod.GET)
     public String getCaloriesHistory(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -206,5 +214,39 @@ public class UserController {
         model.addAttribute("user",user);
         model.addAttribute("pulses", resp);
         return "limited/pulseHistory";
+    }
+
+    @RequestMapping(value = "/user/StepsHistory", method = RequestMethod.GET)
+    public String getStepsHistory(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        Iterator<StepsHistory> iterator = stepsHistoryService.listAllStepsHistory().iterator();
+        ArrayList<StepsHistory> resp = new ArrayList<StepsHistory>();
+        while(iterator.hasNext()){
+            StepsHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                resp.add(aux);
+            }
+        }
+        model.addAttribute("user",user);
+        model.addAttribute("steps", resp);
+        return "limited/stepsHistory";
+    }
+
+    @RequestMapping(value = "/user/LocationHistory", method = RequestMethod.GET)
+    public String getLocationHistory(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
+        ArrayList<LocationHistory> resp = new ArrayList<LocationHistory>();
+        while(iterator.hasNext()){
+            LocationHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                resp.add(aux);
+            }
+        }
+        model.addAttribute("user",user);
+        model.addAttribute("locations", resp);
+        return "limited/locationHistory";
     }
 }
