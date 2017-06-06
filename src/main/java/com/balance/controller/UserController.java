@@ -81,6 +81,35 @@ public class UserController {
         return "redirect:/admin/home";
     }
 
+    @RequestMapping(value = "/admin/user/history/{id}", method = RequestMethod.GET)
+    public String viewHistory(@PathVariable Integer id, Model model) {
+        User user = userService.getUserById(id);
+
+        Iterator<PulseHistory> iterator = pulseHistoryService.listAllPulseHistory().iterator();
+        ArrayList<PulseHistory> resp = new ArrayList<PulseHistory>();
+        while(iterator.hasNext()){
+            PulseHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                resp.add(aux);
+            }
+        }
+        model.addAttribute("user",user);
+        model.addAttribute("pulses", resp);
+
+        Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
+        ArrayList<CaloriesHistory> resp2=new ArrayList<CaloriesHistory>();
+        while(iterator2.hasNext()){
+            CaloriesHistory aux = iterator2.next();
+            if(aux.getUser().equals(user.getId())) {
+                resp2.add(aux);
+            }
+        }
+
+        model.addAttribute("calories",resp2);
+
+        return "admin/history";
+    }
+
     //LimitedUser Controller--------------------------------------------------------
 
     @RequestMapping(value = "/user/profile",method = RequestMethod.GET)
@@ -162,7 +191,6 @@ public class UserController {
                resp.add(aux);
             }
         }
-        System.out.println("LLEGO AQUISDIAJFIDSAJFOSDJSIO");
         model.addAttribute("user",user);
         model.addAttribute("pulses", resp);
         return "limited/pulseHistory";

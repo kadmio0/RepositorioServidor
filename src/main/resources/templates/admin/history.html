@@ -5,7 +5,7 @@
     <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
 </head>
 <body>
-<form th:action="@{/user/home}" method="get">
+<form th:action="@{/admin/home}" method="get">
     <button name="registration" type="Submit">Home</button>
 </form>
 <div class="container">
@@ -28,7 +28,26 @@
             </tr>
         </table>
 
+        <table class="table table-striped">
+            <tr>
+                <th>Calories burned</th>
+                <th>Date Time</th>
+
+            </tr>
+            <tr th:each="calorie : ${calories}">
+                <td th:text="${calorie.calories}">Id</td>
+                <td th:text="${calorie.date}">Name</td>
+
+            </tr>
+        </table>
+
     </div>
 </div>
 </body>
 </html>
+
+
+
+
+
+

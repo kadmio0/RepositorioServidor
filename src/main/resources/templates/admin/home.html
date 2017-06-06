@@ -21,14 +21,17 @@
 				<th>Email</th>
 				<th>View</th>
                 <th>Active</th>
+                <th>History</th>
+
 			</tr>
 			<tr th:each="user : ${userList}">
 				<td th:text="${user.id}">Id</td>
 				<td th:text="${user.name}">Name</td>
 				<td th:text="${user.lastName}">Last Name</td>
 				<td th:text="${user.email}">Email</td>
-				<td><a th:href="${'/admin/user/' + user.id}">View</a></td>
+				<td><a th:href="${'/admin/user/' + user.id}">View Information</a></td>
 				<td><a th:href="${'/admin/user/edit/' + user.id}">Edit Active</a></td>
+				<td><a th:href="${'/admin/user/history/' + user.id}">View History</a></td>
 
 			</tr>
 		</table>
