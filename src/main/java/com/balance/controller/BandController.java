@@ -69,6 +69,7 @@ public class BandController {
         bandService.saveBand(band);
         return band;
     }
+
     @RequestMapping(value = "/bands", method = RequestMethod.GET)
     public ResponseEntity<Iterable<Band>> getBands() {
         return new ResponseEntity(bandService.listAllBands(), HttpStatus.NOT_FOUND);

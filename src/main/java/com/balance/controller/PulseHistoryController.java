@@ -43,14 +43,6 @@ public class PulseHistoryController {
         this.pulseHistoryService = pulseHistoryService;
     }
 
-    @RequestMapping(value = "/PulseHistory", method = RequestMethod.POST)
-
-    public PulseHistory savePulseHistory(@Valid PulseHistory pulseHistory, BindingResult bindingResult, Model model) {
-        pulseHistory.setDate(new Date());
-        pulseHistoryService.savePulseHistory(pulseHistory);
-        return pulseHistory;
-    }
-
     @RequestMapping(value = "/PulseHistories", method = RequestMethod.GET)
     public ResponseEntity<Iterable<PulseHistory>> getPulseHistories() {
         return new ResponseEntity(pulseHistoryService.listAllPulseHistory(), HttpStatus.NOT_FOUND);

@@ -40,14 +40,6 @@ public class CaloriesHistoryController {
         this.caloriesHistoryService=caloriesHistoryService;
     }
 
-    @RequestMapping(value = "/calories", method = RequestMethod.POST)
-    public CaloriesHistory saveCalories(@Valid CaloriesHistory caloriesHistory, BindingResult bindingResult, Model model) {
-        caloriesHistory.setDate(new Date());
-
-        caloriesHistoryService.saveCaloriesHistory(caloriesHistory);
-        return caloriesHistory;
-    }
-
     @RequestMapping(value = "/calories", method = RequestMethod.GET)
     public ResponseEntity<Iterable<CaloriesHistory>> getCaloriess() {
         return new ResponseEntity(caloriesHistoryService.listAllCaloriesHistorys(), HttpStatus.NOT_FOUND);
