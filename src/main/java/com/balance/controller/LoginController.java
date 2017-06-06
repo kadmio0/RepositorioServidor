@@ -34,7 +34,14 @@ public class LoginController {
 	private BandService bandService;
 	private CaloriesHistoryService caloriesHistoryService;
 	private PulseHistoryService pulseHistoryService;
+	private StepsHistoryService stepsHistoryService;
+
 	@Autowired
+    public void setStepsHistoryService(StepsHistoryService stepsHistoryService) {
+        this.stepsHistoryService = stepsHistoryService;
+    }
+
+    @Autowired
 	public void setBandService(BandService bandService) {
 		this.bandService = bandService;
 	}
@@ -112,36 +119,39 @@ public class LoginController {
 		return "admin/home";
 	}
 
-	@RequestMapping(value="/user/home", method = RequestMethod.GET)
-	public String homeExclusive(Model model){
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		User user = userService.findUserByEmail(auth.getName());
-		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-		model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
-		model.addAttribute("user", user);
-		int steps = 0;
-		double calories=0;
-		Iterator<Band> iterator = bandService.listAllBands().iterator();
-		Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
-		Band aux = new Band();
-		CaloriesHistory caux= new CaloriesHistory();
+    @RequestMapping(value="/user/home", method = RequestMethod.GET)
+    public String homeExclusive(Model model){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+        model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
+        model.addAttribute("user", user);
+        int steps = 0;
+        double calories=0;
+        long distance=0;
+        Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
+        Iterator<StepsHistory> iterator3 = stepsHistoryService.listAllStepsHistory().iterator();
+        StepsHistory aux = new StepsHistory();
+        CaloriesHistory caux= new CaloriesHistory();
 
-		while(iterator.hasNext()){
-			aux = iterator.next();
-			steps += aux.getSteps();
-		};
+        while(iterator3.hasNext()){
+            aux = iterator3.next();
+            steps += aux.getSteps();
+            distance+=aux.getDistance();
+        };
 
 
-		while(iterator2.hasNext()){
-			caux = iterator2.next();
-			calories += caux.getCalories();
+        while(iterator2.hasNext()){
+            caux = iterator2.next();
+            calories += caux.getCalories();
 
-		}
-		model.addAttribute("countSteps",steps);
-		model.addAttribute("countCalories",calories);
-		model.addAttribute("id",user.getId());
-		return "user/home";
-	}
+        }
+        model.addAttribute("countSteps",steps);
+        model.addAttribute("countCalories",calories);
+        model.addAttribute("countDistance",distance);
+        model.addAttribute("id",user.getId());
+        return "user/home";
+    }
 
 	@RequestMapping(value="/default", method = RequestMethod.GET)
 	public String defaultAfterLogin()

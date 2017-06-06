@@ -26,6 +26,12 @@ public class UserController {
     private BandService bandService;
     private CaloriesHistoryService caloriesHistoryService;
     private PulseHistoryService pulseHistoryService;
+    private StepsHistoryService stepsHistoryService;
+
+    @Autowired
+    public void setStepsHistoryService(StepsHistoryService stepsHistoryService) {
+        this.stepsHistoryService = stepsHistoryService;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -194,5 +200,23 @@ public class UserController {
         model.addAttribute("user",user);
         model.addAttribute("pulses", resp);
         return "limited/pulseHistory";
+    }
+
+    @RequestMapping(value = "/user/StepsHistory", method = RequestMethod.GET)
+    public String getStepsHistory(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        Iterator<StepsHistory> iterator = stepsHistoryService.listAllStepsHistory().iterator();
+        ArrayList<StepsHistory> resp = new ArrayList<StepsHistory>();
+        while(iterator.hasNext()){
+            StepsHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                resp.add(aux);
+            }
+        }
+        System.out.println("LLEGO AQUISDIAJFIDSAJFOSDJSIO");
+        model.addAttribute("user",user);
+        model.addAttribute("steps", resp);
+        return "limited/stepsHistory";
     }
 }

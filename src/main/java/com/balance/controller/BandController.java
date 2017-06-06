@@ -74,23 +74,4 @@ public class BandController {
         return new ResponseEntity(bandService.listAllBands(), HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(value = "/getSteps/{id}", method = RequestMethod.GET)
-    public Band getBandSteps(@PathVariable Integer id) {
-        Integer steps = 0;
-
-        Iterator<Band> iterator = bandService.listAllBands().iterator();
-
-        while(iterator.hasNext()){
-            if(iterator.next().getUser().equals(id)) {
-                steps += iterator.next().getSteps();
-            }
-
-        };
-
-        Band band = new Band();
-        band.setSteps(steps);
-        band.setId(67626L);
-        return band;
-    }
-
 }
