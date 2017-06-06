@@ -30,7 +30,6 @@ public class LoginController {
 	private UserService userService;
 	private TerminalService terminalService;
 	private BandModelService bandModelService;
-	private BandService bandService;
 	private CaloriesHistoryService caloriesHistoryService;
 	private PulseHistoryService pulseHistoryService;
 	private StepsHistoryService stepsHistoryService;
@@ -40,10 +39,6 @@ public class LoginController {
         this.stepsHistoryService = stepsHistoryService;
     }
 
-    @Autowired
-	public void setBandService(BandService bandService) {
-		this.bandService = bandService;
-	}
 	@Autowired
 	public void setCaloriesHistoryService(CaloriesHistoryService caloriesHistoryService) {
 		this.caloriesHistoryService = caloriesHistoryService;
@@ -119,10 +114,14 @@ public class LoginController {
         int steps = 0;
         double calories=0;
         long distance=0;
+        int bpm= 0;
+
         Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         Iterator<StepsHistory> iterator3 = stepsHistoryService.listAllStepsHistory().iterator();
+        Iterator<PulseHistory> iterator4=pulseHistoryService.listAllPulseHistory().iterator();
         StepsHistory aux = new StepsHistory();
         CaloriesHistory caux= new CaloriesHistory();
+		PulseHistory caux2 = new PulseHistory();
 
         while(iterator3.hasNext()){
             aux = iterator3.next();
@@ -136,9 +135,17 @@ public class LoginController {
             calories += caux.getCalories();
 
         }
+
+		while(iterator4.hasNext()){
+			caux2 = iterator4.next();
+			bpm += caux2.getBpm();
+
+		}
+
         model.addAttribute("countSteps",steps);
         model.addAttribute("countCalories",calories);
         model.addAttribute("countDistance",distance);
+		model.addAttribute("countPulse",bpm);
         model.addAttribute("id",user.getId());
         return "user/home";
     }
