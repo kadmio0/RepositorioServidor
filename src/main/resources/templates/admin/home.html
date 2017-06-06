@@ -23,6 +23,8 @@
                 <th>Active</th>
                 <th>Pulse History</th>
                 <th>Calories History</th>
+				<th>Steps History</th>
+
 
 			</tr>
 			<tr th:each="user : ${userList}">
@@ -34,6 +36,7 @@
 				<td><a th:href="${'/admin/user/edit/' + user.id}">Edit Active</a></td>
 				<td><a th:href="${'/admin/userHistory/pulse/' + user.id}"> View Information</a></td>
 				<td><a th:href="${'/admin/userHistory/calories/' + user.id}">View Information</a></td>
+				<td><a th:href="${'/admin/userHistory/steps/' + user.id}">View Information</a></td>
 
 			</tr>
 		</table>

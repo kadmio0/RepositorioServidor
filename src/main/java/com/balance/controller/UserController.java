@@ -121,6 +121,23 @@ public class UserController {
         return "admin/userHistory/calories";
     }
 
+    @RequestMapping(value = "admin/userHistory/steps/{id}", method = RequestMethod.GET)
+    public String viewStepsHistory(@PathVariable Integer id,Model model) {
+        User user = userService.getUserById(id);
+        Iterator<StepsHistory> iterator2 = stepsHistoryService.listAllStepsHistory().iterator();
+        ArrayList<StepsHistory> resp2=new ArrayList<StepsHistory>();
+        while(iterator2.hasNext()){
+            StepsHistory aux = iterator2.next();
+            if(aux.getUser().equals(user.getId())) {
+                resp2.add(aux);
+            }
+        }
+        model.addAttribute("user",user);
+        model.addAttribute("steps",resp2);
+
+        return "admin/userHistory/steps";
+    }
+
 
 
 

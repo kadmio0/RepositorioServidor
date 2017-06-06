@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Calories History</title>
+    <link href="/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" media="screen"/>
+</head>
+<body>
+<form th:action="@{/admin/home}" method="get">
+    <button name="registration" type="Submit">Home</button>
+</form>
+<div class="container">
+    <div>
+        <h3>Name: </h3>
+        <p th:text="${user.name}">name</p>
+        <h3>History:</h3>
+        <table class="table table-striped">
+            <tr>
+                <th>Steps</th>
+                <th>Distance</th>
+                <th>Date Time</th>
+
+            </tr>
+            <tr th:each="step : ${steps}">
+                <td th:text="${step.steps}">steps</td>
+                <td th:text="${step.distance}">distance</td>
+                <td th:text="${step.date}">date</td>
+            </tr>
+        </table>
+
+    </div>
+</div>
+</body>
+</html>
