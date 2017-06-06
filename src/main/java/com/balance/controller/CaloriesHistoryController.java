@@ -26,7 +26,7 @@ import java.util.Iterator;
  * Created by KEVIN on 05/06/2017.
  */
 @RestController
-public class CaloriesController {
+public class CaloriesHistoryController {
     private CaloriesHistoryService caloriesHistoryService;
     private UserService userService;
 
