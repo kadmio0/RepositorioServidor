@@ -21,7 +21,8 @@
 				<th>Email</th>
 				<th>View</th>
                 <th>Active</th>
-                <th>History</th>
+                <th>Pulse History</th>
+                <th>Calories History</th>
 
 			</tr>
 			<tr th:each="user : ${userList}">
@@ -31,7 +32,8 @@
 				<td th:text="${user.email}">Email</td>
 				<td><a th:href="${'/admin/user/' + user.id}">View Information</a></td>
 				<td><a th:href="${'/admin/user/edit/' + user.id}">Edit Active</a></td>
-				<td><a th:href="${'/admin/user/history/' + user.id}">View History</a></td>
+				<td><a th:href="${'/admin/userHistory/pulse/' + user.id}"> View Information</a></td>
+				<td><a th:href="${'/admin/userHistory/calories/' + user.id}">View Information</a></td>
 
 			</tr>
 		</table>

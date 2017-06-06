@@ -81,10 +81,9 @@ public class UserController {
         return "redirect:/admin/home";
     }
 
-    @RequestMapping(value = "/admin/user/history/{id}", method = RequestMethod.GET)
-    public String viewHistory(@PathVariable Integer id, Model model) {
+    @RequestMapping(value = "/admin/userHistory/pulse/{id}", method = RequestMethod.GET)
+    public String viewPulseHistory(@PathVariable Integer id, Model model) {
         User user = userService.getUserById(id);
-
         Iterator<PulseHistory> iterator = pulseHistoryService.listAllPulseHistory().iterator();
         ArrayList<PulseHistory> resp = new ArrayList<PulseHistory>();
         while(iterator.hasNext()){
@@ -96,6 +95,12 @@ public class UserController {
         model.addAttribute("user",user);
         model.addAttribute("pulses", resp);
 
+        return "admin/userHistory/pulse";
+    }
+
+    @RequestMapping(value = "/admin/userHistory/calories/{id}", method = RequestMethod.GET)
+    public String viewCaloriesHistory(@PathVariable Integer id, Model model) {
+        User user = userService.getUserById(id);
         Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         ArrayList<CaloriesHistory> resp2=new ArrayList<CaloriesHistory>();
         while(iterator2.hasNext()){
@@ -104,13 +109,20 @@ public class UserController {
                 resp2.add(aux);
             }
         }
-
+        model.addAttribute("user",user);
         model.addAttribute("calories",resp2);
 
-        return "admin/history";
+        return "admin/userHistory/calories";
     }
 
-    //LimitedUser Controller--------------------------------------------------------
+
+
+
+
+
+
+
+        //LimitedUser Controller--------------------------------------------------------
 
     @RequestMapping(value = "/user/profile",method = RequestMethod.GET)
     public String viewProfile(Model model) {
