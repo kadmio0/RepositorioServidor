@@ -266,4 +266,28 @@ public class UserController {
         model.addAttribute("locations", resp);
         return "limited/locationHistory";
     }
+
+    @RequestMapping(value = "user/Map", method = RequestMethod.GET)
+    public String getMap(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
+        int cantidad = 0;
+        ArrayList<Float> listLatitud = new ArrayList<>();
+        ArrayList<Float> listLongitud = new ArrayList<>();
+        ArrayList<String> listName = new ArrayList<>();
+        while(iterator.hasNext()){
+            LocationHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                cantidad++;
+                listLatitud.add(aux.getLatitude());
+                listLongitud.add(aux.getLongitude());
+                listName.add("Location " + cantidad);
+            }
+        }
+        model.addAttribute("latitudes", listLatitud);
+        model.addAttribute("longitudes", listLongitud);
+        model.addAttribute("titulos", listName);
+        return "limited/map";
+    }
 }
