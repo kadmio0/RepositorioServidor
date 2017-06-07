@@ -267,7 +267,7 @@ public class UserController {
         return "limited/locationHistory";
     }
 
-    @RequestMapping(value = "user/Map", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/Map", method = RequestMethod.GET)
     public String getMap(Model model) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
@@ -289,5 +289,29 @@ public class UserController {
         model.addAttribute("longitudes", listLongitud);
         model.addAttribute("titulos", listName);
         return "limited/map";
+    }
+
+    @RequestMapping(value = "/user/LastLocation", method = RequestMethod.GET)
+    public String getLastLocation(Model model) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User user = userService.findUserByEmail(auth.getName());
+        Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
+        int cantidad = 0;
+        ArrayList<Float> listLatitud = new ArrayList<>();
+        ArrayList<Float> listLongitud = new ArrayList<>();
+        ArrayList<String> listName = new ArrayList<>();
+        while(iterator.hasNext()){
+            LocationHistory aux = iterator.next();
+            if(aux.getUser().equals(user.getId())) {
+                cantidad++;
+                listLatitud.add(aux.getLatitude());
+                listLongitud.add(aux.getLongitude());
+                listName.add("Location " + cantidad);
+            }
+        }
+        model.addAttribute("latitud", listLatitud.get(listLatitud.size() - 1));
+        model.addAttribute("longitud", listLongitud.get(listLongitud.size() - 1));
+        model.addAttribute("titulo", listName.get(listName.size() - 1));
+        return "limited/mapLastLocation";
     }
 }

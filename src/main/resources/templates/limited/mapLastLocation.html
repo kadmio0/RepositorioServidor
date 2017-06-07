@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <title>Geolocal</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCi1Rsl51hkfmrTe9-YShmlWMGn3bknbMA&amp;callback=myMap"></script>
+
+    <style>
+                html, body, #map-canvas
+                {
+                    height: 100%;
+                    width: 100%;
+                    margin: 0px;
+                    padding: 0px;
+                }
+        </style>
+
+    <script th:inline="javascript">
+
+                var latitud = /*[[${latitud}]]*/;
+                var longitud = /*[[${longitud}]]*/;
+                var titulo = /*[[${titulo}]]*/;
+
+                var marker;
+
+                function drawMap(map, latlng, titulo)
+                {
+                    marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map,
+                        title: titulo
+                    });
+                }
+
+                function init_map() {
+                    var centro = new google.maps.LatLng(0.0, 0.0);
+                    var options = {zoom: 3, center: centro};
+
+                    var map = new google.maps.Map(document.getElementById("map-canvas"), options);
+
+                    var defaultLatLng = new google.maps.LatLng(latitud, longitud);
+
+                    drawMap(map, defaultLatLng, titulo);
+                }
+
+                window.onload = function() {
+                    console.log('Hola Mundo');
+                    console.log('Hola Mundo');
+                    console.log('Hola Mundo');
+                    console.log('Hola Mundo');
+                    init_map();
+                }
+
+        </script>
+
+</head>
+<body>
+<div id="map-canvas"></div>
+</body>
+</html>
