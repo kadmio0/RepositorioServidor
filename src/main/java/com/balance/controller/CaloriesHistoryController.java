@@ -21,6 +21,7 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by KEVIN on 05/06/2017.
@@ -47,20 +48,23 @@ public class CaloriesHistoryController {
 
     @RequestMapping(value = "/getCalories/{id}", method = RequestMethod.GET)
     public CaloriesHistory getCalories(@PathVariable Integer id) {
-        double calories = 0;
-
+        double calories = 0.0;
         Iterator<CaloriesHistory> iterator = caloriesHistoryService.listAllCaloriesHistorys().iterator();
+        List<CaloriesHistory> myList=new ArrayList<>();
 
         while(iterator.hasNext()){
-            if(iterator.next().getUser().equals(id)) {
-                CaloriesHistory aux = iterator.next();
-                calories += aux.getCalories();
+            myList.add(iterator.next());
+        }
+
+        for(CaloriesHistory ch:myList){
+            if(ch.getUser().equals(id)){
+                calories+=ch.getCalories();
             }
         }
 
         CaloriesHistory caloriesnew = new CaloriesHistory();
         caloriesnew.setCalories(calories);
-        caloriesnew.setId(67626L);
+        caloriesnew.setId(67620L);
         return caloriesnew;
     }
 

@@ -108,46 +108,52 @@ public class LoginController {
     public String homeExclusive(Model model){
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName());
-        model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
-        model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
-        model.addAttribute("user", user);
+
         int steps = 0;
-        double calories=0;
+        double calories=0.0;
         long distance=0;
-        int bpm= 0;
+        int bpm=0;
 
-        Iterator<CaloriesHistory> iterator2 = caloriesHistoryService.listAllCaloriesHistorys().iterator();
-        Iterator<StepsHistory> iterator3 = stepsHistoryService.listAllStepsHistory().iterator();
-        Iterator<PulseHistory> iterator4=pulseHistoryService.listAllPulseHistory().iterator();
-        StepsHistory aux = new StepsHistory();
-        CaloriesHistory caux= new CaloriesHistory();
-		PulseHistory caux2 = new PulseHistory();
+        Iterator<CaloriesHistory> iteratorC = caloriesHistoryService.listAllCaloriesHistorys().iterator();
+        Iterator<StepsHistory> iteratorS = stepsHistoryService.listAllStepsHistory().iterator();
+        Iterator<PulseHistory> iteratorP = pulseHistoryService.listAllPulseHistory().iterator();
 
-        while(iterator3.hasNext()){
-            aux = iterator3.next();
-            steps += aux.getSteps();
-            distance+=aux.getDistance();
+        StepsHistory auxS = new StepsHistory();
+        CaloriesHistory auxC = new CaloriesHistory();
+        PulseHistory auxP = new PulseHistory();
+
+        while(iteratorS.hasNext()){
+            auxS = iteratorS.next();
+            if(auxS.getUser().equals(user.getId())) {
+				steps += auxS.getSteps();
+				distance += auxS.getDistance();
+			}
         };
 
 
-        while(iterator2.hasNext()){
-            caux = iterator2.next();
-            calories += caux.getCalories();
-
+        while(iteratorC.hasNext()){
+            auxC = iteratorC.next();
+            if(auxC.getUser().equals(user.getId())) {
+				calories += auxC.getCalories();
+			}
         }
 
-		while(iterator4.hasNext()){
-			caux2 = iterator4.next();
-			bpm += caux2.getBpm();
-
+		while(iteratorP.hasNext()){
+			auxP = iteratorP.next();
+			if(auxP.getUser().equals(user.getId())) {
+				bpm += auxP.getBpm();
+			}
 		}
 
+		model.addAttribute("userName", "Welcome " + user.getName() + " " + user.getLastName() + " (" + user.getEmail() + ")");
+		model.addAttribute("userMessage","Content Available Only for Users with Limited Role");
+		model.addAttribute("user", user);
         model.addAttribute("countSteps",steps);
         model.addAttribute("countCalories",calories);
         model.addAttribute("countDistance",distance);
-		model.addAttribute("countPulse",bpm);
+        model.addAttribute("countBpm",bpm);
         model.addAttribute("id",user.getId());
-        return "user/home";
+		return "user/home";
     }
 
 	@RequestMapping(value="/default", method = RequestMethod.GET)

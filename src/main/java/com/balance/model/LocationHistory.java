@@ -1,9 +1,6 @@
 package com.balance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -13,6 +10,7 @@ import java.util.Date;
 public class LocationHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="location_history_id")
     private Long id;
 
     private Float latitude;

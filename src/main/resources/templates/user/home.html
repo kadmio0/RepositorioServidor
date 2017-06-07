@@ -21,11 +21,13 @@
 <br></br>
 <br></br>
 <div class="container">
+
     <script th:inline="javascript">
-        var idValue = /*[[${id}]]*/;
+        var idValue = [[${id}]];
+
         function updateSteps(){
             $.getJSON( "/getSteps/" + idValue, function( data ) {
-                $('#pasos').html(data.steps);
+                $('#steps').html(data.steps);
             });
         }
 
@@ -37,29 +39,25 @@
 
         function updateDistance(){
             $.getJSON( "/getDistance/" + idValue, function( data ) {
-                $('#distancia').html(data.distance);
+                $('#distance').html(data.distance);
             });
         }
         setInterval(function(){
             updateSteps();
             updateDistance();
             updateCalories();
-        }, 1000);
+        }, 3000);
     </script>
 
-    <p>Pasos</p>
-    <span id="pasos" class="label label-primary" th:text="${countSteps}">countSteps</span> <br/><br/>
+   <p>Pasos</p>
+    <span id="steps" class="label label-primary" th:text="${countSteps}">countSteps</span> <br/><br/>
 
     <p>Distancia</p>
-    <span id="distancia" class="label label-primary" th:text="${countDistance}">countDistance</span> <br/><br/>
+    <span id="distance" class="label label-primary" th:text="${countDistance}">countDistance</span> <br/><br/>
 
     <p>Quemando calorias</p>
-    <span id="calories" class="label label-primary" th:text="${countCalories}">countCalories</span>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
-    <br></br>
+    <span id="calories" class="label label-primary" th:text="${countCalories}">countCalories</span><br></br>
+
     <textarea name="" id="" cols="30" rows="10"></textarea>
 </div>
 </body>

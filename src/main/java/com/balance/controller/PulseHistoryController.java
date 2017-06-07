@@ -43,7 +43,7 @@ public class PulseHistoryController {
         this.pulseHistoryService = pulseHistoryService;
     }
 
-    @RequestMapping(value = "/PulseHistories", method = RequestMethod.GET)
+    @RequestMapping(value = "/Pulse", method = RequestMethod.GET)
     public ResponseEntity<Iterable<PulseHistory>> getPulseHistories() {
         return new ResponseEntity(pulseHistoryService.listAllPulseHistory(), HttpStatus.NOT_FOUND);
     }
@@ -55,7 +55,7 @@ public class PulseHistoryController {
         bpm=pulseHistory.getBpm();
         PulseHistory pulse = new PulseHistory();
         pulse.setBpm(bpm);
-        pulse.setId(676277);
+        pulse.setId(67620L);
         return pulse;
     }
 

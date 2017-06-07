@@ -1,9 +1,6 @@
 package com.balance.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Date;
 
 /**
@@ -14,11 +11,19 @@ public class StepsHistory {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name="steps_history_id")
     private Long id;
 
+    @Column(name="steps")
     private Integer steps;
-    private Long distance;
+
+    @Column(name="distance")
+    private long distance;
+
+    @Column(name="user")
     private Integer user;
+
+    @Column(name="date")
     private Date date;
 
     public Date getDate() {
@@ -59,7 +64,7 @@ public class StepsHistory {
         return distance;
     }
 
-    public void setDistance(Long distance) {
+    public void setDistance(long distance) {
         this.distance = distance;
     }
 

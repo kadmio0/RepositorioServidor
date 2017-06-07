@@ -8,7 +8,7 @@ public class PulseHistory {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="pulseHistory_id")
-    private int id;
+    private Long id;
     private int bpm;
     private Date date;
     private Integer user;
@@ -22,11 +22,11 @@ public class PulseHistory {
     public PulseHistory() {
     }
 
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

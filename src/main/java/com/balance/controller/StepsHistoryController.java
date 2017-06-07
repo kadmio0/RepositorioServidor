@@ -3,20 +3,31 @@ package com.balance.controller;
 import com.balance.model.Band;
 import com.balance.model.StepsHistory;
 import com.balance.service.StepsHistoryService;
+import com.balance.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by da_20 on 6/6/2017.
  */
+@RestController
 public class StepsHistoryController {
     StepsHistoryService stepsHistoryService;
+    private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @Autowired
     public void setStepsHistoryService(StepsHistoryService stepsHistoryService) {
@@ -36,14 +47,15 @@ public class StepsHistoryController {
 
         while(iterator.hasNext()){
             if(iterator.next().getUser().equals(id)) {
-                steps += iterator.next().getSteps();
+                StepsHistory aux=iterator.next();
+                steps += aux.getSteps();
             }
 
         };
 
         StepsHistory stepsHistory = new StepsHistory();
         stepsHistory.setSteps(steps);
-        stepsHistory.setId(67626L);
+        stepsHistory.setId(67620L);
         return stepsHistory;
     }
 
@@ -52,18 +64,22 @@ public class StepsHistoryController {
         long distance = 0;
 
         Iterator<StepsHistory> iterator = stepsHistoryService.listAllStepsHistory().iterator();
+        List<StepsHistory> myList=new ArrayList<>();
 
         while(iterator.hasNext()){
-            if(iterator.next().getUser().equals(id)) {
-                distance += iterator.next().getDistance();
+            myList.add(iterator.next());
+        }
+
+        for(StepsHistory sh:myList){
+            if(sh.getUser().equals(id)){
+                distance+=sh.getDistance();
             }
+        }
 
-        };
-
-        StepsHistory stepsHistory = new StepsHistory();
-        stepsHistory.setDistance(distance);
-        stepsHistory.setId(67626L);
-        return stepsHistory;
+        StepsHistory stepsHistorynew = new StepsHistory();
+        stepsHistorynew.setDistance(distance);
+        stepsHistorynew.setId(67620L);
+        return stepsHistorynew;
     }
 
 }

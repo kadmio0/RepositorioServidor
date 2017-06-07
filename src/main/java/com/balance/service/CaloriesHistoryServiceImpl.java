@@ -8,8 +8,9 @@ import org.springframework.stereotype.Service;
 /**
  * Created by KEVIN on 05/06/2017.
  */
-@Service("CaloriesHistoryService")
+@Service
 public class CaloriesHistoryServiceImpl implements CaloriesHistoryService{
+
     @Autowired
     CaloriesHistoryRepository caloriesHistoryRepository;
 

@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 /**
  * Created by KEVIN on 05/06/2017.
  */
-@Repository("caloriesHistoryRepository")
+@Repository
 public interface CaloriesHistoryRepository extends JpaRepository<CaloriesHistory, Integer> {
 }

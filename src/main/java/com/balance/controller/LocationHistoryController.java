@@ -8,12 +8,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * Created by da_20 on 6/6/2017.
  */
+@RestController
 public class LocationHistoryController {
     private LocationHistoryService locationHistoryService;
 
@@ -32,19 +36,24 @@ public class LocationHistoryController {
         float latitude = 0;
         float longitude = 0;
         Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
+        List<LocationHistory> myList=new ArrayList<>();
 
         while(iterator.hasNext()){
-            if(iterator.next().getUser().equals(id)) {
-                latitude += iterator.next().getLatitude();
-                longitude += iterator.next().getLongitude();
-            }
+            myList.add(iterator.next());
+        }
 
-        };
+        for(LocationHistory lh:myList){
+            if(lh.getUser().equals(id)){
+                latitude+=lh.getLatitude();
+                longitude+=lh.getLongitude();
+            }
+        }
 
         LocationHistory locationHistory = new LocationHistory();
         locationHistory.setLatitude(latitude);
         locationHistory.setLongitude(longitude);
-        locationHistory.setId(67626L);
+        locationHistory.setId(67620L);
         return locationHistory;
+
     }
 }
