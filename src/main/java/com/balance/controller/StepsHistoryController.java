@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -44,13 +45,15 @@ public class StepsHistoryController {
         Integer steps = 0;
 
         Iterator<StepsHistory> iterator = stepsHistoryService.listAllStepsHistory().iterator();
-
+        Date fechaactual = new Date();
         while(iterator.hasNext()){
-            if(iterator.next().getUser().equals(id)) {
                 StepsHistory aux=iterator.next();
+                if(aux.getUser().equals(id)  &&
+                        fechaactual.getDay()==aux.getDate().getDay() &&
+                        fechaactual.getMonth()==aux.getDate().getMonth() &&
+                        fechaactual.getYear()==aux.getDate().getYear()){
                 steps += aux.getSteps();
             }
-
         };
 
         StepsHistory stepsHistory = new StepsHistory();
@@ -65,13 +68,16 @@ public class StepsHistoryController {
 
         Iterator<StepsHistory> iterator = stepsHistoryService.listAllStepsHistory().iterator();
         List<StepsHistory> myList=new ArrayList<>();
-
+        Date fechaactual = new Date();
         while(iterator.hasNext()){
             myList.add(iterator.next());
         }
 
         for(StepsHistory sh:myList){
-            if(sh.getUser().equals(id)){
+            if(sh.getUser().equals(id) &&
+                    fechaactual.getDay()==sh.getDate().getDay() &&
+                    fechaactual.getMonth()==sh.getDate().getMonth() &&
+                    fechaactual.getYear()==sh.getDate().getYear()){
                 distance+=sh.getDistance();
             }
         }

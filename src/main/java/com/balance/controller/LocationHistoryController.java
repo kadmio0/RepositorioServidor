@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -37,13 +38,16 @@ public class LocationHistoryController {
         float longitude = 0;
         Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
         List<LocationHistory> myList=new ArrayList<>();
-
+        Date fechaactual = new Date();
         while(iterator.hasNext()){
             myList.add(iterator.next());
         }
 
         for(LocationHistory lh:myList){
-            if(lh.getUser().equals(id)){
+            if(lh.getUser().equals(id) &&
+                    fechaactual.getDay()==lh.getDate().getDay() &&
+                    fechaactual.getMonth()==lh.getDate().getMonth() &&
+                    fechaactual.getYear()==lh.getDate().getYear()){
                 latitude+=lh.getLatitude();
                 longitude+=lh.getLongitude();
             }

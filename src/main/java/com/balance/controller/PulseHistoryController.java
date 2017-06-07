@@ -50,6 +50,7 @@ public class PulseHistoryController {
 
     @RequestMapping(value = "/getPulse/{id}", method = RequestMethod.GET)
     public PulseHistory getBandPulse(@PathVariable Integer id) {
+        Date fechaactual = new Date();
         Integer bpm;
         PulseHistory pulseHistory = pulseHistoryService.getPulseHistoryById(id);
         bpm=pulseHistory.getBpm();

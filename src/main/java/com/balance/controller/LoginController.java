@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -81,6 +82,9 @@ public class LoginController {
 		if(user.getTerminal()==null){
 			return "redirect:/registration";
 		}
+		if(!user.getTerminal().getBandModel().getName().equals(user.getBand())){
+			return "redirect:/registration";
+		}
 		if (!bindingResult.hasErrors() && !terminalService.getTerminalById(user.getTerminal().getSerial()).isActive()) {
 			userService.saveUser(user);
 			model.addAttribute("successMessage", "El usuario se registro correctamente");
@@ -123,10 +127,13 @@ public class LoginController {
         StepsHistory auxS = new StepsHistory();
         CaloriesHistory auxC = new CaloriesHistory();
         PulseHistory auxP = new PulseHistory();
-
+		Date fechaactual=new Date();
         while(iteratorS.hasNext()){
             auxS = iteratorS.next();
-            if(auxS.getUser().equals(user.getId())) {
+            if(auxS.getUser().equals(user.getId()) &&
+					auxS.getDate().getDay()==fechaactual.getDay() &&
+					auxS.getDate().getMonth()==fechaactual.getMonth() &&
+					auxS.getDate().getYear()==fechaactual.getYear() ) {
 				steps += auxS.getSteps();
 				distance += auxS.getDistance();
 			}
@@ -135,14 +142,20 @@ public class LoginController {
 
         while(iteratorC.hasNext()){
             auxC = iteratorC.next();
-            if(auxC.getUser().equals(user.getId())) {
+            if(auxC.getUser().equals(user.getId()) &&
+					auxC.getDate().getDay()==fechaactual.getDay() &&
+					auxC.getDate().getMonth()==fechaactual.getMonth() &&
+					auxC.getDate().getYear()==fechaactual.getYear() ) {
 				calories += auxC.getCalories();
 			}
         }
 
 		while(iteratorP.hasNext()){
 			auxP = iteratorP.next();
-			if(auxP.getUser().equals(user.getId())) {
+			if(auxP.getUser().equals(user.getId()) &&
+					auxP.getDate().getDay()==fechaactual.getDay() &&
+					auxP.getDate().getMonth()==fechaactual.getMonth() &&
+					auxP.getDate().getYear()==fechaactual.getYear() ) {
 				bpm += auxP.getBpm();
 			}
 		}

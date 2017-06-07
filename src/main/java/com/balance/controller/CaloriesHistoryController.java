@@ -52,13 +52,16 @@ public class CaloriesHistoryController {
         Integer calories = 0;
         Iterator<CaloriesHistory> iterator = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         List<CaloriesHistory> myList=new ArrayList<>();
-
+        Date fechaactual = new Date();
         while(iterator.hasNext()){
             myList.add(iterator.next());
         }
 
         for(CaloriesHistory ch:myList){
-            if(ch.getUser().equals(id)){
+            if(ch.getUser().equals(id) &&
+                    fechaactual.getDay()==ch.getDate().getDay() &&
+                    fechaactual.getMonth()==ch.getDate().getMonth() &&
+                    fechaactual.getYear()==ch.getDate().getYear()){
                 calories+=ch.getCalories();
             }
         }
