@@ -150,13 +150,25 @@ public class LoginController {
 			}
         }
 
+        PulseHistory fechaMayor = null;
+
 		while(iteratorP.hasNext()){
 			auxP = iteratorP.next();
 			if(auxP.getUser().equals(user.getId()) &&
 					auxP.getDate().getDay()==fechaactual.getDay() &&
 					auxP.getDate().getMonth()==fechaactual.getMonth() &&
 					auxP.getDate().getYear()==fechaactual.getYear() ) {
-				bpm += auxP.getBpm();
+
+				if(fechaMayor == null) {
+					fechaMayor = auxP;
+					bpm = auxP.getBpm();
+				}
+				else {
+					if(auxP.getDate().after(fechaMayor.getDate())) {
+						fechaMayor = auxP;
+						bpm = auxP.getBpm();
+					}
+				}
 			}
 		}
 

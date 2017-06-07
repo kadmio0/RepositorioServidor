@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Created by da_20 on 31/5/2017.
@@ -50,10 +51,34 @@ public class PulseHistoryController {
 
     @RequestMapping(value = "/getPulse/{id}", method = RequestMethod.GET)
     public PulseHistory getBandPulse(@PathVariable Integer id) {
-        Date fechaactual = new Date();
+
+        Iterator<PulseHistory> iteratorP = pulseHistoryService.listAllPulseHistory().iterator();
+        PulseHistory auxP = new PulseHistory();
+
+        PulseHistory fechaMayor = null;
+        Date fechaactual=new Date();
         Integer bpm;
-        PulseHistory pulseHistory = pulseHistoryService.getPulseHistoryById(id);
-        bpm=pulseHistory.getBpm();
+        while(iteratorP.hasNext()){
+            auxP = iteratorP.next();
+            if(auxP.getUser().equals(id) &&
+                    auxP.getDate().getDay()==fechaactual.getDay() &&
+                    auxP.getDate().getMonth()==fechaactual.getMonth() &&
+                    auxP.getDate().getYear()==fechaactual.getYear() ) {
+
+                if(fechaMayor == null) {
+                    fechaMayor = auxP;
+                    bpm = auxP.getBpm();
+                }
+                else {
+                    if(auxP.getDate().after(fechaMayor.getDate())) {
+                        fechaMayor = auxP;
+                        bpm = auxP.getBpm();
+                    }
+                }
+            }
+        }
+
+        bpm=fechaMayor.getBpm();
         PulseHistory pulse = new PulseHistory();
         pulse.setBpm(bpm);
         pulse.setId(67620L);

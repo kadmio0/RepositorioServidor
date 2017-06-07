@@ -43,10 +43,18 @@
                 $('#distance').html(data.distance);
             });
         }
+
+        function updatePulse(){
+            $.getJSON( "/getPulse/" + idValue, function( data ) {
+                $('#bpm').html(data.bpm);
+            });
+        }
+
         setInterval(function(){
             updateSteps();
             updateDistance();
             updateCalories();
+            updatePulse();
         }, 1000);
     </script>
 
@@ -59,7 +67,9 @@
     <p>Calorias</p>
     <span id="calories" class="label label-primary" th:text="${countCalories}">countCalories</span><br></br>
 
-    <textarea name="" id="" cols="30" rows="10"></textarea>
+    <p>Ritmo cardiaco</p>
+    <span id="bpm" class="label label-primary" th:text="${countBpm}">countCalories</span><br></br>
+
 </div>
 </body>
 </html>
