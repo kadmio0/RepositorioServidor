@@ -1,6 +1,7 @@
 package com.balance.model;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.Date;
 
 /**
@@ -16,7 +17,7 @@ public class Band {
     private Date fecha_registro;
     private Float latitude;
     private Float longitude;
-    private Double calories;
+    private Integer calories;
     private Integer user;
 
     public Integer getBpm() {
@@ -51,11 +52,11 @@ public class Band {
         this.longitude = longitude;
     }
 
-    public Double getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories(Double calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 

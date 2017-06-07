@@ -16,7 +16,7 @@ public class CaloriesHistory {
     private Long id;
 
     @Column(name="calories")
-    private double calories;
+    private Integer calories;
 
     @Column(name="user_id")
     private  Integer user;
@@ -24,7 +24,7 @@ public class CaloriesHistory {
     @Column(name="date")
     private Date date;
 
-    public CaloriesHistory(double calories, Integer user, Date date) {
+    public CaloriesHistory(Integer calories, Integer user, Date date) {
         this.calories = calories;
         this.user = user;
         this.date = date;
@@ -41,11 +41,11 @@ public class CaloriesHistory {
         this.id = id;
     }
 
-    public double getCalories() {
+    public Integer getCalories() {
         return calories;
     }
 
-    public void setCalories(double calories) {
+    public void setCalories(Integer calories) {
         this.calories = calories;
     }
 

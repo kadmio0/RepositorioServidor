@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
@@ -48,7 +49,7 @@ public class CaloriesHistoryController {
 
     @RequestMapping(value = "/getCalories/{id}", method = RequestMethod.GET)
     public CaloriesHistory getCalories(@PathVariable Integer id) {
-        double calories = 0.0;
+        Integer calories = 0;
         Iterator<CaloriesHistory> iterator = caloriesHistoryService.listAllCaloriesHistorys().iterator();
         List<CaloriesHistory> myList=new ArrayList<>();
 
