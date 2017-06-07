@@ -98,4 +98,16 @@ public class Band {
             this.fecha_registro = fecha_registro;
         }
     }
+
+    public void asignar(Long id, Integer steps, Integer bpm, Long distance, Date fecha_registro, Float latitude, Float longitude, Integer calories, Integer user) {
+        this.id = id;
+        this.steps = steps;
+        this.bpm = bpm;
+        this.distance = distance;
+        this.fecha_registro = fecha_registro;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.calories = calories;
+        this.user = user;
+    }
 }
