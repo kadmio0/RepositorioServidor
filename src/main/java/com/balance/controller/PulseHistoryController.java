@@ -57,7 +57,7 @@ public class PulseHistoryController {
 
         PulseHistory fechaMayor = null;
         Date fechaactual=new Date();
-        Integer bpm;
+        Integer bpm=0;
         while(iteratorP.hasNext()){
             auxP = iteratorP.next();
             if(auxP.getUser().equals(id) &&
@@ -65,20 +65,20 @@ public class PulseHistoryController {
                     auxP.getDate().getMonth()==fechaactual.getMonth() &&
                     auxP.getDate().getYear()==fechaactual.getYear() ) {
 
-                if(fechaMayor == null) {
+                /*if(fechaMayor == null) {
                     fechaMayor = auxP;
                     bpm = auxP.getBpm();
                 }
-                else {
-                    if(auxP.getDate().after(fechaMayor.getDate())) {
+                else {*/
+                    //if(auxP.getDate().after(fechaMayor.getDate())) {
                         fechaMayor = auxP;
                         bpm = auxP.getBpm();
-                    }
-                }
+                //   }
+               // }
             }
         }
 
-        bpm=fechaMayor.getBpm();
+       // bpm=fechaMayor.getBpm();
         PulseHistory pulse = new PulseHistory();
         pulse.setBpm(bpm);
         pulse.setId(67620L);

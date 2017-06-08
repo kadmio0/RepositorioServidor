@@ -273,8 +273,8 @@ public class UserController {
         User user = userService.findUserByEmail(auth.getName());
         Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
         int cantidad = 0;
-        ArrayList<Float> listLatitud = new ArrayList<>();
-        ArrayList<Float> listLongitud = new ArrayList<>();
+        ArrayList<Integer> listLatitud = new ArrayList<>();
+        ArrayList<Integer> listLongitud = new ArrayList<>();
         ArrayList<String> listName = new ArrayList<>();
         while(iterator.hasNext()){
             LocationHistory aux = iterator.next();
@@ -297,8 +297,8 @@ public class UserController {
         User user = userService.findUserByEmail(auth.getName());
         Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
         int cantidad = 0;
-        ArrayList<Float> listLatitud = new ArrayList<>();
-        ArrayList<Float> listLongitud = new ArrayList<>();
+        ArrayList<Integer> listLatitud = new ArrayList<>();
+        ArrayList<Integer> listLongitud = new ArrayList<>();
         ArrayList<String> listName = new ArrayList<>();
         while(iterator.hasNext()){
             LocationHistory aux = iterator.next();

@@ -13,12 +13,12 @@ public class LocationHistory {
     @Column(name="location_history_id")
     private Long id;
 
-    private Float latitude;
-    private Float longitude;
+    private Integer latitude;
+    private Integer longitude;
     private Integer user;
     private Date date;
 
-    public LocationHistory(Float latitude, Float longitude, Integer user, Date date) {
+    public LocationHistory(Integer latitude, Integer longitude, Integer user, Date date) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.user = user;
@@ -36,19 +36,19 @@ public class LocationHistory {
         this.id = id;
     }
 
-    public Float getLatitude() {
+    public Integer getLatitude() {
         return latitude;
     }
 
-    public void setLatitude(Float latitude) {
+    public void setLatitude(Integer latitude) {
         this.latitude = latitude;
     }
 
-    public Float getLongitude() {
+    public Integer getLongitude() {
         return longitude;
     }
 
-    public void setLongitude(Float longitude) {
+    public void setLongitude(Integer longitude) {
         this.longitude = longitude;
     }
 

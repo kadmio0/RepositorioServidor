@@ -36,6 +36,11 @@ public class LoginController {
 	private CaloriesHistoryService caloriesHistoryService;
 	private PulseHistoryService pulseHistoryService;
 	private StepsHistoryService stepsHistoryService;
+	private LocationHistoryService locationHistoryService;
+	@Autowired
+	public void setLocationHistoryService(LocationHistoryService locationHistoryService) {
+		this.locationHistoryService = locationHistoryService;
+	}
 
 	@Autowired
     public void setStepsHistoryService(StepsHistoryService stepsHistoryService) {
@@ -203,5 +208,47 @@ public class LoginController {
 		model.addAttribute("Users",userService.listAllUsers());
 		return "users";
 	}
+
+	@RequestMapping(value = "/distance", method = RequestMethod.GET)
+	public String getDistance(Model model) {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		User user = userService.findUserByEmail(auth.getName());
+
+		Iterator<LocationHistory> locations = locationHistoryService.listAllLocationHistory().iterator();
+		LocationHistory location1;
+		LocationHistory location2;
+		Integer distance=0;
+		Integer distanceFinal=0;
+		Integer cal1=0;
+		Integer cal2=0;
+		//LATITUDE -> X    LONGITUDE -> Y
+		while(locations.hasNext()){
+
+			location1=locations.next();
+			if(locations.hasNext()){
+				location2=locations.next();
+
+				if(location1!=null && location2!=null && location1.getUser().equals(user.getId()) &&
+						location2.getUser().equals(user.getId())){
+					if(location1.getDate().getDate()>=location2.getDate().getDate() &&
+							location1.getDate().getMonth()>=location2.getDate().getMonth() &&
+							location1.getDate().getYear()>=location2.getDate().getYear())
+					{
+
+						cal1=2*(location2.getLatitude()-location1.getLatitude());
+						cal2=2*(location2.getLongitude()-location1.getLongitude());
+						distance=(int)Math.sqrt(cal1+cal2);
+						if(distance<=1000){
+							distanceFinal+=distance;
+						}
+					}
+				}
+			}
+		}
+
+		model.addAttribute("totalDistance",distanceFinal);
+		return "user/distance";
+	}
+
 
 }

@@ -34,8 +34,8 @@ public class LocationHistoryController {
 
     @RequestMapping(value = "/getLocations/{id}", method = RequestMethod.GET)
     public LocationHistory getLocations(@PathVariable Integer id) {
-        float latitude = 0;
-        float longitude = 0;
+        Integer latitude = 0;
+        Integer longitude = 0;
         Iterator<LocationHistory> iterator = locationHistoryService.listAllLocationHistory().iterator();
         List<LocationHistory> myList=new ArrayList<>();
         Date fechaactual = new Date();
