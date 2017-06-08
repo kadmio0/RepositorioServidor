@@ -37,9 +37,15 @@
 
                     var map = new google.maps.Map(document.getElementById("map-canvas"), options);
 
-                    var defaultLatLng = new google.maps.LatLng(latitud, longitud);
+                    /*<![CDATA[*/
 
-                    drawMap(map, defaultLatLng, titulo);
+                    if ((latitud != null) && (longitud != null) && (titulo != null)) {
+                        var defaultLatLng = new google.maps.LatLng(latitud, longitud);
+
+                        drawMap(map, defaultLatLng, titulo);
+                    }
+
+                    /*]]>*/
                 }
 
                 window.onload = function() {

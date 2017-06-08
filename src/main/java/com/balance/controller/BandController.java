@@ -62,31 +62,15 @@ public class BandController {
     }
 
     @RequestMapping(value = "/band", method = RequestMethod.POST)
-    public List<Band> saveBand(@Valid Band band, BindingResult bindingResult, Model model) {
-        Iterable<User> userList = userService.listAllUsers();
-        List<Band> bandList = new ArrayList<>();
+    public Band saveBand(@Valid Band band, BindingResult bindingResult, Model model) {
+        band.setFecha_registro(new Date());
+        caloriesHistoryService.saveCaloriesHistory(new CaloriesHistory(band.getCalories(), band.getUser(), band.getFecha_registro()));
+        pulseHistoryService.savePulseHistory(new PulseHistory(band.getBpm(), band.getFecha_registro(), band.getUser()));
+        stepsHistoryService.saveStepsHistory(new StepsHistory(band.getSteps(), band.getDistance(), band.getUser(), band.getFecha_registro()));
+        locationHistoryService.saveLocationHistory(new LocationHistory(band.getLatitude(), band.getLongitude(), band.getUser(), band.getFecha_registro()));
+        bandService.saveBand(band);
 
-        Random rand = new Random();
-
-        for (User u : userList) {
-            band.setFecha_registro(new Date());
-            Band aux = new Band();
-            Integer  step = rand.nextInt(50) + 1;
-            Integer bpms = rand.nextInt(39)+52;
-            Integer distances = rand.nextInt(4)+1;
-            Float latitude = rand.nextFloat()*7+3;
-            Float longitude = rand.nextFloat()*10+5;
-            Integer calories =rand.nextInt(20)+5;
-            aux.asignar(band.getId(), (band.getSteps() + step) / 2, (band.getBpm() + bpms) / 2, (band.getDistance() + distances) / 2, band.getFecha_registro(), (band.getLatitude() + latitude) / 2, (band.getLongitude() + longitude) / 2, (band.getCalories() + calories) / 2, u.getId());
-            caloriesHistoryService.saveCaloriesHistory(new CaloriesHistory((band.getCalories() + calories) / 2, u.getId(), band.getFecha_registro()));
-            pulseHistoryService.savePulseHistory(new PulseHistory((band.getBpm() + bpms) / 2,band.getFecha_registro(), u.getId()));
-            stepsHistoryService.saveStepsHistory(new StepsHistory((band.getSteps() + step) / 2, (band.getDistance() + distances) / 2, u.getId(), band.getFecha_registro()));
-            locationHistoryService.saveLocationHistory(new LocationHistory((band.getLatitude() + latitude) / 2, (band.getLongitude() + longitude) / 2, u.getId(), band.getFecha_registro()));
-            bandService.saveBand(aux);
-            bandList.add(aux);
-        }
-
-        return bandList;
+        return band;
     }
 
     @RequestMapping(value = "/bands", method = RequestMethod.GET)

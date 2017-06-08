@@ -309,9 +309,13 @@ public class UserController {
                 listName.add("Location " + cantidad);
             }
         }
-        model.addAttribute("latitud", listLatitud.get(listLatitud.size() - 1));
-        model.addAttribute("longitud", listLongitud.get(listLongitud.size() - 1));
-        model.addAttribute("titulo", listName.get(listName.size() - 1));
+
+        if (!listLatitud.isEmpty()) {
+            model.addAttribute("latitud", listLatitud.get(listLatitud.size() - 1));
+            model.addAttribute("longitud", listLongitud.get(listLongitud.size() - 1));
+            model.addAttribute("titulo", listName.get(listName.size() - 1));
+        }
+
         return "limited/mapLastLocation";
     }
 }
